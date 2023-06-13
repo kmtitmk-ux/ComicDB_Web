@@ -1,1 +1,99 @@
-{}
+{
+  "api": {
+    "pf01": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {},
+  "function": {
+    "ComicScraping": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "pf01NodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "pf01NodeModules": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_ComicScraping_bucketsName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_comicTable": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_pf01NodeModules_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "pf01NodeModules"
+        }
+      ]
+    },
+    "AMPLIFY_function_pf01NodeModules_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "pf01NodeModules"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "s346b0016c": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "pf01NodeModules",
+      "env": "dev",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "bucketsName",
+      "environmentVariableName": "BucketsName"
+    },
+    {
+      "cloudFormationParameterName": "comicTable",
+      "environmentVariableName": "ComicTable"
+    }
+  ]
+}
