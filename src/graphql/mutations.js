@@ -8,14 +8,16 @@ export const createComic = /* GraphQL */ `
   ) {
     createComic(input: $input, condition: $condition) {
       id
+      createdAt
+      description
       errorCount
       img
       like
       status
+      tags
       title
       updatedAt
       url
-      createdAt
     }
   }
 `;
@@ -26,14 +28,16 @@ export const updateComic = /* GraphQL */ `
   ) {
     updateComic(input: $input, condition: $condition) {
       id
+      createdAt
+      description
       errorCount
       img
       like
       status
+      tags
       title
       updatedAt
       url
-      createdAt
     }
   }
 `;
@@ -44,14 +48,16 @@ export const deleteComic = /* GraphQL */ `
   ) {
     deleteComic(input: $input, condition: $condition) {
       id
+      createdAt
+      description
       errorCount
       img
       like
       status
+      tags
       title
       updatedAt
       url
-      createdAt
     }
   }
 `;

@@ -44,10 +44,13 @@ exports.handler = async (event) => {
                         PutRequest: {
                             Item: {
                                 id: { S: uuidv4() },
-                                createdAt: { S: dayjs(v.date).format('YYYY-MM-DD HH:mm:ss[Z]') },
+                                createdAt: { S: dayjs(v.date).format() },
+                                errCount: { N: '0' },
+                                description: { S: v.description },
                                 img: { S: v.imageUrl },
                                 like: { N: String(v.like) },
-                                updatedAt: { S: dayjs().format('YYYY-MM-DD HH:mm:ss[Z]') },
+                                tags: { S: v.tags },
+                                updatedAt: { S: dayjs().format() },
                                 url: { S: v.url },
                                 status: { N: '0' },
                                 title: { S: v.title },
@@ -63,11 +66,11 @@ exports.handler = async (event) => {
             // クエリの実行
             queryResult = await dynamoDBClient.send(new QueryCommand({
                 TableName: process.env.ComicTable,
-                IndexName: 'byOrderByStatus',
+                IndexName: 'byOrderByStatusByUpdatedAt',
                 KeyConditionExpression: '#status = :status',
                 ExpressionAttributeNames: { '#status': 'status' },
                 ExpressionAttributeValues: { ':status': { N: '0' } },
-                Limit: 1,
+                Limit: 1
                 // ScanIndexForward: false
             }));
             for (let v of queryResult.Items) {
@@ -81,7 +84,7 @@ exports.handler = async (event) => {
                 if (errFlg) {
                     continue;
                 }
-                v.updatedAt = { S: dayjs().format('YYYY-MM-DD HH:mm:ss[Z]') };
+                v.updatedAt = { S: dayjs().format() };
                 writeRequests.push({ PutRequest: { Item: v } });
             }
             break;
@@ -119,16 +122,24 @@ async function getHtmlData() {
                 title = $(element).find('a[data-gtm-click-label="entry-search-result-item-title"]').text().trim(),
                 like = $(element).find('[data-gtm-click-label="entry-search-result-item-users"]').text().replace(' users', '').trim(),
                 date = $(element).find('.entry-contents-date').text(),
-                today = dayjs().add(9, 'hour').subtract(3, 'day'),
-                imageUrl = $(element).find('[data-gtm-click-label="entry-search-result-item-image"]').attr('src');
-            console.info('date:', today.format('YYYY/MM/DD'), dayjs(date).format('YYYY/MM/DD'));
+                today = dayjs().add(9, 'hour').subtract(20, 'day'),
+                imageUrl = $(element).find('[data-gtm-click-label="entry-search-result-item-image"]').attr('src'),
+                description = $(element).find('.centerarticle-entry-summary').text(),
+                tags = [];
+            for (let li of $(element).find('.entrysearch-entry-tags').text().split(/\n|\r\n/).filter(Boolean)) {
+                if (li.trim() && !['あとで読む', 'あとで読んだ'].includes(li.trim())) tags.push(li.trim());
+            }
+            tags = JSON.stringify(tags);
+            console.info('date:', today.format('YYYY/MM/DD'), dayjs(date).format('YYYY/MM/DD'), tags);
             if (today.isAfter(dayjs(date))) break;
             outParam.push({
-                url: url,
-                title: title.trim(),
-                like: like,
                 date: date,
-                imageUrl: imageUrl
+                description: description,
+                imageUrl: imageUrl,
+                like: like,
+                tags: tags,
+                title: title.trim(),
+                url: url,
             });
         }
     }).catch(error => {
@@ -139,7 +150,7 @@ async function getHtmlData() {
     for (let i in outParam) {
         await axios.get(outParam[i].imageUrl, { responseType: 'arraybuffer' }).then(async (res) => {
             let resFileType = await FileType.fromBuffer(res.data);
-            outParam[i].imageUrl = dayjs(outParam[i].date).format('public/YYYY/MM/DD/') + (outParam[i].title.replace(/\//g, '')) + '.' + resFileType.ext;
+            outParam[i].imageUrl = dayjs(outParam[i].date).format('public/YYYY/MM/DD/') + dayjs().valueOf() + '.' + resFileType.ext;
             let putObjParam = {
                 Bucket: process.env.BucketsName,
                 Key: outParam[i].imageUrl,

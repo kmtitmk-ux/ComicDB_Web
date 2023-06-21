@@ -5,7 +5,6 @@ import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/mate
 import { useAuth } from 'src/hooks/use-auth';
 
 export const AccountPopover = (props) => {
-    console.log('AccountPopover', props);
     const { anchorEl, onClose, open, signOut} = props;
     const router = useRouter();
     const auth = useAuth();

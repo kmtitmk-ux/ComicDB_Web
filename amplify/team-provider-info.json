@@ -15,7 +15,7 @@
       "function": {
         "ComicScraping": {
           "deploymentBucketName": "amplify-pf01-dev-163425-deployment",
-          "s3Key": "amplify-builds/ComicScraping-4474654c415a6f596154-build.zip",
+          "s3Key": "amplify-builds/ComicScraping-38393168356671664f4b-build.zip",
           "bucketsName": "pf014740a4bdfae54b9f9dfe9f39d0b14b2b163425-dev",
           "comicTable": "Comic-mr5b3lsoobgwxh3jtrqmgclg6a-dev"
         },
@@ -29,6 +29,12 @@
       },
       "storage": {
         "s346b0016c": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "doumcfu7od9ou",
+          "type": "manual"
+        }
       }
     }
   }

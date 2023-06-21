@@ -5,14 +5,16 @@ export const getComic = /* GraphQL */ `
   query GetComic($id: ID!) {
     getComic(id: $id) {
       id
+      createdAt
+      description
       errorCount
       img
       like
       status
+      tags
       title
       updatedAt
       url
-      createdAt
     }
   }
 `;
@@ -25,14 +27,84 @@ export const listComics = /* GraphQL */ `
     listComics(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        createdAt
+        description
         errorCount
         img
         like
         status
+        tags
         title
         updatedAt
         url
+      }
+      nextToken
+    }
+  }
+`;
+export const comicsByStatusAndCreatedAt = /* GraphQL */ `
+  query ComicsByStatusAndCreatedAt(
+    $status: Int!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelComicFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    comicsByStatusAndCreatedAt(
+      status: $status
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
         createdAt
+        description
+        errorCount
+        img
+        like
+        status
+        tags
+        title
+        updatedAt
+        url
+      }
+      nextToken
+    }
+  }
+`;
+export const comicsByStatusAndLike = /* GraphQL */ `
+  query ComicsByStatusAndLike(
+    $status: Int!
+    $like: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelComicFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    comicsByStatusAndLike(
+      status: $status
+      like: $like
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        description
+        errorCount
+        img
+        like
+        status
+        tags
+        title
+        updatedAt
+        url
       }
       nextToken
     }
@@ -57,14 +129,16 @@ export const comicsByStatusAndUpdatedAt = /* GraphQL */ `
     ) {
       items {
         id
+        createdAt
+        description
         errorCount
         img
         like
         status
+        tags
         title
         updatedAt
         url
-        createdAt
       }
       nextToken
     }
@@ -89,14 +163,16 @@ export const comicsByTitleAndUrl = /* GraphQL */ `
     ) {
       items {
         id
+        createdAt
+        description
         errorCount
         img
         like
         status
+        tags
         title
         updatedAt
         url
-        createdAt
       }
       nextToken
     }

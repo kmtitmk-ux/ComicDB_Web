@@ -5,14 +5,16 @@ export const onCreateComic = /* GraphQL */ `
   subscription OnCreateComic($filter: ModelSubscriptionComicFilterInput) {
     onCreateComic(filter: $filter) {
       id
+      createdAt
+      description
       errorCount
       img
       like
       status
+      tags
       title
       updatedAt
       url
-      createdAt
     }
   }
 `;
@@ -20,14 +22,16 @@ export const onUpdateComic = /* GraphQL */ `
   subscription OnUpdateComic($filter: ModelSubscriptionComicFilterInput) {
     onUpdateComic(filter: $filter) {
       id
+      createdAt
+      description
       errorCount
       img
       like
       status
+      tags
       title
       updatedAt
       url
-      createdAt
     }
   }
 `;
@@ -35,14 +39,16 @@ export const onDeleteComic = /* GraphQL */ `
   subscription OnDeleteComic($filter: ModelSubscriptionComicFilterInput) {
     onDeleteComic(filter: $filter) {
       id
+      createdAt
+      description
       errorCount
       img
       like
       status
+      tags
       title
       updatedAt
       url
-      createdAt
     }
   }
 `;
