@@ -20,10 +20,10 @@
       "Type": "String",
       "Default": "functionpf01NodeModulesArn"
     },
-    "bucketsName": {
+    "comicTable": {
       "Type": "String"
     },
-    "comicTable": {
+    "bucketsName": {
       "Type": "String"
     }
   },
@@ -80,11 +80,11 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "BucketsName": {
-              "Ref": "bucketsName"
-            },
             "ComicTable": {
               "Ref": "comicTable"
+            },
+            "BucketsName": {
+              "Ref": "bucketsName"
             }
           }
         },

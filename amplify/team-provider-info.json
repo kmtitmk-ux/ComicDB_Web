@@ -52,8 +52,8 @@
         "ComicScraping": {
           "deploymentBucketName": "amplify-pf01-prod-161302-deployment",
           "s3Key": "amplify-builds/ComicScraping-3832547a6c79706c6e41-build.zip",
-          "bucketsName": "pf014740a4bdfae54b9f9dfe9f39d0b14b2b161302-prod",
-          "comicTable": "Comic-y3o753lztjf35hdxfs3lghqav4-prod"
+          "comicTable": "Comic-y3o753lztjf35hdxfs3lghqav4-prod",
+          "bucketsName": "pf014740a4bdfae54b9f9dfe9f39d0b14b2b161302-prod"
         },
         "pf01NodeModules": {
           "deploymentBucketName": "amplify-pf01-prod-161302-deployment",
