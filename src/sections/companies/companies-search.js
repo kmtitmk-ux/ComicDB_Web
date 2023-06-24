@@ -16,9 +16,10 @@ export const CompaniesSearch = (props) => {
         <form onSubmit={searchWord}>
             <Card sx={{ p: 2 }}>
                 <OutlinedInput
-                    defaultValue=""
+                    type="search"
+                    // defaultValue={newWord}
                     fullWidth
-                    placeholder={'検索ワード'}
+                    placeholder="検索ワード"
                     value={newWord}
                     name="word"
                     onChange={((e) => setNewWord(e.target.value))}

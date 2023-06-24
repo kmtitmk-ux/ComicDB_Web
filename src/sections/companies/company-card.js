@@ -46,9 +46,8 @@ export const CompanyCard = (props) => {
                     direction="row"
                     spacing={1}
                     sx={{
-                        // justifyContent: 'center',
                         flexWrap: 'wrap',
-                        mb: 1,
+                        mb: 1
                     }}
                 >
                     {(() => {
@@ -57,13 +56,14 @@ export const CompanyCard = (props) => {
                         let outParam = [];
                         for (let v of tags) {
                             outParam.push(<Chip
+                                key={v}
                                 label={v}
                                 variant="outlined"
                                 onClick={((e) => changeGraphqlParam(e.target.innerText))}
                                 style={{
                                     marginTop: 8,
                                     marginRight: 10,
-                                    marginLeft: 0,
+                                    marginLeft: 0
                                 }}
                                 size="small"
                             />);

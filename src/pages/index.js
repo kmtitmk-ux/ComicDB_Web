@@ -57,7 +57,6 @@ const Page = () => {
      */
     const changeGraphqlParam = async (isWord, isSort) => {
         delete graphqlParam.variables.nextToken;
-        console.log('確認', isWord, isSort);
         switch (isSort) {
             case 'createdAt':
                 graphqlParam.query = comicsByStatusAndCreatedAt;
@@ -74,7 +73,7 @@ const Page = () => {
                 { title: { contains: isWord } }
             ]
         };
-        console.info('API.graphql IN:', graphqlParam.query);
+        console.info('API.graphql IN:', graphqlParam);
         let response = await API.graphql(graphqlParam);
         console.info('API.graphql OUT:', response.data[Object.keys(response.data)[0]].items);
         graphqlParam.variables.nextToken = response.data[Object.keys(response.data)[0]].nextToken;
@@ -189,11 +188,11 @@ const Page = () => {
                         >
                             {companies.map((company) => (
                                 <Grid
+                                    key={company.id}
                                     id={company.id}
                                     xs={12}
                                     md={6}
                                     lg={4}
-                                    key={company.id}
                                 >
                                     <CompanyCard
                                         changeGraphqlParam={changeGraphqlParam}

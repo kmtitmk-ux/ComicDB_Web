@@ -39,11 +39,55 @@
       "service": "LambdaLayer"
     }
   },
-  "hosting": {
-    "amplifyhosting": {
-      "providerPlugin": "awscloudformation",
-      "service": "amplifyhosting",
-      "type": "manual"
+  "hosting": {},
+  "parameters": {
+    "AMPLIFY_function_ComicScraping_bucketsName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_comicTable": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_pf01NodeModules_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "pf01NodeModules"
+        }
+      ]
+    },
+    "AMPLIFY_function_pf01NodeModules_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "pf01NodeModules"
+        }
+      ]
     }
   },
   "storage": {

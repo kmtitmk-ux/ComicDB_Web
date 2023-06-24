@@ -3,9 +3,9 @@
     {
       "type": "ProjectLayer",
       "resourceName": "pf01NodeModules",
-      "env": "dev",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true
+      "isLatestVersionSelected": true,
+      "env": "prod"
     }
   ],
   "environmentVariableList": [

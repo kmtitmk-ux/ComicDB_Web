@@ -20,19 +20,23 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersion0f1b13d3": {
+    "LambdaLayerVersiona5d6b05d": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
-        "CompatibleRuntimes": [
-          "nodejs18.x"
-        ],
+        "CompatibleRuntimes": {
+          "Ref": "runtimes"
+        },
         "Content": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/pf01NodeModules-LambdaLayerVersion0f1b13d3-build.zip"
+          "S3Key": {
+            "Ref": "s3Key"
+          }
         },
-        "Description": "Updated layer version 2023-06-07T07:40:35.266Z",
+        "Description": {
+          "Ref": "description"
+        },
         "LayerName": {
           "Fn::Sub": [
             "pf01NodeModules-${env}",
@@ -47,11 +51,13 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate0f1b13d3": {
+    "LambdaLayerPermissionPrivatea5d6b05d": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:ap-northeast-1:117880326767:layer:pf01NodeModules-dev:1",
+        "LayerVersionArn": {
+          "Ref": "LambdaLayerVersiona5d6b05d"
+        },
         "Principal": {
           "Ref": "AWS::AccountId"
         }
@@ -61,7 +67,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersion0f1b13d3"
+        "Ref": "LambdaLayerVersiona5d6b05d"
       }
     }
   }

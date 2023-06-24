@@ -70,20 +70,43 @@ exports.handler = async (event) => {
                 KeyConditionExpression: '#status = :status',
                 ExpressionAttributeNames: { '#status': 'status' },
                 ExpressionAttributeValues: { ':status': { N: '0' } },
-                Limit: 1
-                // ScanIndexForward: false
+                Limit: 2
             }));
             for (let v of queryResult.Items) {
                 let errFlg = await axios.get(v.url.S).then(async (res) => {
                     v.errCount = { N: '0' };
+                    return true;
                 }).catch(error => {
-                    if (v.errCount.N >= 3) return true;
-                    v.errCount = { N: String(Number(v.errCount.N) + 1) };
-                    console.error('エラーが発生しました', error);
+                    console.error(error);
+                    if (v.errCount.N < 3) v.errCount = { N: String(Number(v.errCount.N) + 1) };
+                    return false;
                 });
-                if (errFlg) {
-                    continue;
-                }
+                if (!errFlg) continue;
+                // いいね、タグ更新
+                let titleSearch = `https://b.hatena.ne.jp/q/${v.title.S}?target=title`;
+                console.log(0, v.title.S, titleSearch, encodeURI(titleSearch));
+                errFlg = await axios.get(encodeURI(titleSearch)).then(async (res) => {
+                    const $ = cheerio.load(res.data);
+                    let element = $('.centerarticle-entry.is-image-entry-unit')[0];
+                    console.log(1, element);
+                    let url = $(element).find('a[data-gtm-click-label="entry-search-result-item-title"]').attr('href');
+                    if (url !== v.url) throw new Error();
+                    let like = $(element).find('[data-gtm-click-label="entry-search-result-item-users"]').text().replace(' users', '').trim(),
+                        tags = [];
+                    for (let li of $(element).find('.entrysearch-entry-tags').text().split(/\n|\r\n/).filter(Boolean)) {
+                        if (li.trim() && !['あとで読む', 'あとで読んだ'].includes(li.trim())) tags.push(li.trim());
+                    }
+                    v.tags = { S: JSON.stringify(tags) };
+                    v.like = { N: String(like) };
+                    v.errCount = { N: '0' };
+                    return true;
+                }).catch(error => {
+                    console.error(error);
+                    if (v.errCount.N < 3) v.errCount = { N: String(Number(v.errCount.N) + 1) };
+                    return false;
+                });
+                if (!errFlg) continue;
+                // 更新
                 v.updatedAt = { S: dayjs().format() };
                 writeRequests.push({ PutRequest: { Item: v } });
             }
