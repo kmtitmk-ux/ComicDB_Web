@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 
 export const CompanyCard = (props) => {
     const { company, changeGraphqlParam } = props;
-    const bucketUrl = 'https://pf014740a4bdfae54b9f9dfe9f39d0b14b2b163425-dev.s3.ap-northeast-1.amazonaws.com/';
+    const bucketUrl = 'https://' + process.env.BucketsName + '.s3.ap-northeast-1.amazonaws.com/';
     return (
         <Card
             sx={{
