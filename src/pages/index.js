@@ -101,7 +101,7 @@ const Page = (props) => {
     return (
         <>
             <Head>
-                <title>Companies | Devias Kit</title>
+                <title>最新のWeb漫画から検索 | 人気のWeb漫画が「0円」で読める【ComicDB】</title>
             </Head>
             <Box
                 component="main"

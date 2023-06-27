@@ -165,7 +165,7 @@ async function getHtmlData(inUrl, procType, pageData) {
                 tags = [];
             pageData.push(element);
             for (let li of $(element).find('.entrysearch-entry-tags').text().split(/\n|\r\n/).filter(Boolean)) {
-                if (li.trim() && !['あとで読む', 'あとで読んだ'].includes(li.trim())) tags.push(li.trim());
+                if (li.trim() && !['あとで読む', 'あとで読んだ', 'あとで消す'].includes(li.trim())) tags.push(li.trim());
             }
             tags = JSON.stringify(tags);
             if (procType === 'addNewData' && dayjs().add(9, 'hour').subtract(2, 'day').isAfter(dayjs(date))) break;

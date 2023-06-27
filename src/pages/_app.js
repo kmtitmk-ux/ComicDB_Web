@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Amplify } from 'aws-amplify';
 import Head from 'next/head';
 import { CacheProvider } from '@emotion/react';
@@ -6,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
+import TagManager from 'react-gtm-module';
 import { AuthConsumer, AuthProvider } from 'src/contexts/auth-context';
 import { useNProgress } from 'src/hooks/use-nprogress';
 import { createTheme } from 'src/theme';
@@ -21,9 +23,25 @@ const clientSideEmotionCache = createEmotionCache();
 const SplashScreen = () => null;
 
 const App = (props) => {
+    const router = useRouter();
     const [formState, setFormState] = useState(initialState);
     const [todos, setTodos] = useState([]);
     const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+    useEffect(
+        () => {
+            TagManager.initialize({ gtmId: 'GTM-WN44VP7' });
+            // ページ変更時にもトラッキングする
+            router.events.on('routeChangeComplete', () => {
+                TagManager.pageview({ url: window.location.pathname });
+            });
+            return () => {
+                router.events.off('routeChangeComplete');
+            };
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    );
+
     function setInput(key, value) {
         setFormState({ ...formState, [key]: value });
     }
