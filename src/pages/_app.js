@@ -15,6 +15,7 @@ import 'simplebar-react/dist/simplebar.min.css';
 import '@aws-amplify/ui-react/styles.css';
 import awsExports from '../aws-exports';
 Amplify.configure(awsExports);
+const s3Bucket = Amplify.configure(awsExports).aws_user_files_s3_bucket;
 const initialState = { name: '', description: '' };
 const clientSideEmotionCache = createEmotionCache();
 const SplashScreen = () => null;
@@ -44,6 +45,10 @@ const App = (props) => {
                 <AuthProvider>
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
+                        {
+                            console.log(pageProps)
+                            // (() => console.log(pageProps))
+                        }
                         {/* <Authenticator>
                             {({ signOut, user }) => {
                                 pageProps.signOut = signOut;
@@ -55,7 +60,10 @@ const App = (props) => {
                                 );
                             }}
                         </Authenticator> */}
-                        {getLayout(<Component {...pageProps} />)}
+                        {getLayout(<Component
+                            {...pageProps}
+                            s3Bucket={s3Bucket}
+                        />)}
                     </ThemeProvider>
                 </AuthProvider>
             </LocalizationProvider>

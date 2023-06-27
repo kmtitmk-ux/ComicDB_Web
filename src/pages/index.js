@@ -11,7 +11,8 @@ import { CompanyCard } from 'src/sections/companies/company-card';
 import { CompaniesSearch } from 'src/sections/companies/companies-search';
 import dayjs from 'dayjs';
 
-const Page = () => {
+const Page = (props) => {
+    const { s3Bucket } = props;
     const [companies, setCompanies] = useState([]);
     const [word, setWord] = React.useState('');
     const [sort, setSort] = React.useState('createdAt');
@@ -197,6 +198,7 @@ const Page = () => {
                                     <CompanyCard
                                         changeGraphqlParam={changeGraphqlParam}
                                         company={company}
+                                        s3Bucket={s3Bucket}
                                     />
                                 </Grid>
                             ))}

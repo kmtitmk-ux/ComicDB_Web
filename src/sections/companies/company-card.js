@@ -5,8 +5,8 @@ import { Avatar, Box, Card, Chip, CardContent, Divider, Link, Stack, SvgIcon, Ty
 import dayjs from 'dayjs';
 
 export const CompanyCard = (props) => {
-    const { company, changeGraphqlParam } = props;
-    const bucketUrl = 'https://' + process.env.BucketsName + '.s3.ap-northeast-1.amazonaws.com/';
+    const { company, changeGraphqlParam, s3Bucket } = props;
+    const bucketUrl = 'https://' + s3Bucket + '.s3.ap-northeast-1.amazonaws.com/';
     return (
         <Card
             sx={{
@@ -29,7 +29,7 @@ export const CompanyCard = (props) => {
                         }}
                     >
                         <Avatar
-                            src={encodeURI(bucketUrl + company.img)}
+                            src={bucketUrl + company.img}
                             variant="square"
                             sx={{ width: "100%", height: "auto", maxHeight: 170 }}
                         />
