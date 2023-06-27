@@ -12,7 +12,6 @@ const cheerio = require('cheerio');
 const dayjs = require('dayjs');
 const FileType = require('file-type');
 const { v4: uuidv4 } = require('uuid');
-const url = 'https://b.hatena.ne.jp/q/Web漫画?&target=tag&sort=recent';
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -21,44 +20,56 @@ exports.handler = async (event) => {
     let writeRequests = [], queryResult = {};
     console.info(`EVENT: ${JSON.stringify(event)}`);
     switch (event.procType) {
-        case 'addNewData': {
-            let scrapingData = await getHtmlData();
-            for (let v of scrapingData) {
-                // クエリの実行
-                queryResult = await dynamoDBClient.send(new QueryCommand({
-                    TableName: process.env.ComicTable,
-                    IndexName: 'byOrderByTitleByUrl',
-                    KeyConditionExpression: '#title = :title AND #url = :url',
-                    ExpressionAttributeNames: {
-                        '#title': 'title',
-                        '#url': 'url'
-                    },
-                    ExpressionAttributeValues: {
-                        ':title': { S: v.title },
-                        ':url': { S: v.url }
-                    },
-                }));
-                console.info('クエリ結果:', queryResult);
-                if (!queryResult.Count) {
-                    writeRequests.push({
-                        PutRequest: {
-                            Item: {
-                                id: { S: uuidv4() },
-                                createdAt: { S: dayjs(v.date).format() },
-                                errCount: { N: '0' },
-                                description: { S: v.description },
-                                img: { S: v.imageUrl },
-                                like: { N: String(v.like) },
-                                tags: { S: v.tags },
-                                updatedAt: { S: dayjs().format() },
-                                url: { S: v.url },
-                                status: { N: '0' },
-                                title: { S: v.title },
-                                '__typename': { S: 'Comic' }
-                            }
-                        }
-                    });
+        case 'addNewData':
+        case 'addHistoryData': {
+            let url = 'https://b.hatena.ne.jp/q/web漫画?page={pageCount}&target=tag&sort=recent&users=3';
+            let pageCount = 1;
+            if (event.procType === 'addHistoryData') {
+                try {
+                    let getObjectCommandRes = await s3.send(new GetObjectCommand({
+                        Bucket: process.env.BucketsName,
+                        Key: 'pageCount.json'
+                    }));
+                    getObjectCommandRes = await streamToString(getObjectCommandRes.Body);
+                    pageCount = JSON.parse(getObjectCommandRes).pageCount;
+                } catch (e) {
+                    if (e.name !== 'NoSuchKey') throw e;
                 }
+            }
+            url = url.replace('{pageCount}', pageCount);
+            let pageData = [];
+            let scrapingData = await getHtmlData(url, event.procType, pageData);
+            if (event.procType === 'addHistoryData') {
+                pageCount = (pageData.length) ? pageCount + 1 : 1;
+                console.info('pageCount:', pageCount);
+                await s3.send(new PutObjectCommand({
+                    Bucket: process.env.BucketsName,
+                    Key: 'pageCount.json',
+                    Body: JSON.stringify({ pageCount: pageCount })
+                }));
+            }
+            let c = 0;
+            for (let v of scrapingData) {
+                if (!writeRequests[c]) writeRequests.push([]);
+                writeRequests[c].push({
+                    PutRequest: {
+                        Item: {
+                            id: { S: uuidv4() },
+                            createdAt: { S: dayjs(v.date).format() },
+                            errCount: { N: '0' },
+                            description: { S: v.description },
+                            img: { S: v.imageUrl },
+                            like: { N: String(v.like) },
+                            tags: { S: v.tags },
+                            updatedAt: { S: dayjs().format() },
+                            url: { S: v.url },
+                            status: { N: '0' },
+                            title: { S: v.title },
+                            '__typename': { S: 'Comic' }
+                        }
+                    }
+                });
+                if (writeRequests[c].length % 25 === 0) c++;
             }
             break;
         }
@@ -72,6 +83,7 @@ exports.handler = async (event) => {
                 ExpressionAttributeValues: { ':status': { N: '0' } },
                 Limit: 2
             }));
+            let c = 0;
             for (let v of queryResult.Items) {
                 let errFlg = await axios.get(v.url.S).then(async (res) => {
                     v.errCount = { N: '0' };
@@ -84,11 +96,9 @@ exports.handler = async (event) => {
                 if (!errFlg) continue;
                 // いいね、タグ更新
                 let titleSearch = `https://b.hatena.ne.jp/q/${v.title.S}?target=title`;
-                console.log(0, v.title.S, titleSearch, encodeURI(titleSearch));
                 errFlg = await axios.get(encodeURI(titleSearch)).then(async (res) => {
                     const $ = cheerio.load(res.data);
                     let element = $('.centerarticle-entry.is-image-entry-unit')[0];
-                    console.log(1, element);
                     let url = $(element).find('a[data-gtm-click-label="entry-search-result-item-title"]').attr('href');
                     if (url !== v.url) throw new Error();
                     let like = $(element).find('[data-gtm-click-label="entry-search-result-item-users"]').text().replace(' users', '').trim(),
@@ -108,6 +118,8 @@ exports.handler = async (event) => {
                 if (!errFlg) continue;
                 // 更新
                 v.updatedAt = { S: dayjs().format() };
+                if (!writeRequests[c]) writeRequests.push([]);
+                if (writeRequests[c].length % 25 === 0) c++;
                 writeRequests.push({ PutRequest: { Item: v } });
             }
             break;
@@ -115,11 +127,13 @@ exports.handler = async (event) => {
         default:
     };
     // DynamoDB追加
-    if (writeRequests.length) {
-        let batchWriteParam = { RequestItems: { [process.env.ComicTable]: writeRequests } };
-        console.info('BatchWriteItemCommand IN:', JSON.stringify(batchWriteParam));
-        let batchWriteResult = await dynamoDBClient.send(new BatchWriteItemCommand(batchWriteParam));
-        console.info('バッチ書き込みが成功しました:', batchWriteResult);
+    for (let v of writeRequests) {
+        if (v.length) {
+            let batchWriteParam = { RequestItems: { [process.env.ComicTable]: v } };
+            console.info('BatchWriteItemCommand IN:', JSON.stringify(batchWriteParam));
+            let batchWriteResult = await dynamoDBClient.send(new BatchWriteItemCommand(batchWriteParam));
+            console.info('バッチ書き込みが成功しました:', batchWriteResult);
+        }
     }
     return {
         statusCode: 200,
@@ -136,41 +150,56 @@ exports.handler = async (event) => {
 /**
  * ウェブページのHTMLデータを取得
  */
-async function getHtmlData() {
+async function getHtmlData(inUrl, procType, pageData) {
+    console.info('getHtmlData IN:', inUrl);
     let outParam = [];
-    await axios.get(encodeURI(url)).then(async (response) => {
+    await axios.get(encodeURI(inUrl)).then(async (response) => {
         const $ = cheerio.load(response.data);
         for (let element of $('.centerarticle-entry.is-image-entry-unit')) {
             let url = $(element).find('a[data-gtm-click-label="entry-search-result-item-title"]').attr('href'),
                 title = $(element).find('a[data-gtm-click-label="entry-search-result-item-title"]').text().trim(),
                 like = $(element).find('[data-gtm-click-label="entry-search-result-item-users"]').text().replace(' users', '').trim(),
                 date = $(element).find('.entry-contents-date').text(),
-                today = dayjs().add(9, 'hour').subtract(20, 'day'),
                 imageUrl = $(element).find('[data-gtm-click-label="entry-search-result-item-image"]').attr('src'),
                 description = $(element).find('.centerarticle-entry-summary').text(),
                 tags = [];
+            pageData.push(element);
             for (let li of $(element).find('.entrysearch-entry-tags').text().split(/\n|\r\n/).filter(Boolean)) {
                 if (li.trim() && !['あとで読む', 'あとで読んだ'].includes(li.trim())) tags.push(li.trim());
             }
             tags = JSON.stringify(tags);
-            console.info('date:', today.format('YYYY/MM/DD'), dayjs(date).format('YYYY/MM/DD'), tags);
-            if (today.isAfter(dayjs(date))) break;
-            outParam.push({
-                date: date,
-                description: description,
-                imageUrl: imageUrl,
-                like: like,
-                tags: tags,
-                title: title.trim(),
-                url: url,
-            });
+            if (procType === 'addNewData' && dayjs().add(9, 'hour').subtract(2, 'day').isAfter(dayjs(date))) break;
+            let queryResult = await dynamoDBClient.send(new QueryCommand({
+                TableName: process.env.ComicTable,
+                IndexName: 'byOrderByTitleByUrl',
+                KeyConditionExpression: '#title = :title AND #url = :url',
+                ExpressionAttributeNames: {
+                    '#title': 'title',
+                    '#url': 'url'
+                },
+                ExpressionAttributeValues: {
+                    ':title': { S: title },
+                    ':url': { S: url }
+                }
+            }));
+            if (!queryResult.Count) {
+                outParam.push({
+                    date: date,
+                    description: description,
+                    imageUrl: imageUrl,
+                    like: like,
+                    tags: tags,
+                    title: title.trim(),
+                    url: url
+                });
+            }
         }
     }).catch(error => {
         console.error('エラーが発生しました', error);
     });
-
     // 画像取得
     for (let i in outParam) {
+        // S3に追加
         await axios.get(outParam[i].imageUrl, { responseType: 'arraybuffer' }).then(async (res) => {
             let resFileType = await FileType.fromBuffer(res.data);
             outParam[i].imageUrl = dayjs(outParam[i].date).format('public/YYYY/MM/DD/') + dayjs().valueOf() + '.' + resFileType.ext;
@@ -187,4 +216,11 @@ async function getHtmlData() {
     }
     console.info('getHtmlData OUT:', outParam);
     return outParam;
+}
+
+// ストリームを文字列に変換するヘルパー関数
+async function streamToString(stream) {
+    const chunks = [];
+    for await (const chunk of stream) chunks.push(chunk);
+    return Buffer.concat(chunks).toString('utf-8');
 }
