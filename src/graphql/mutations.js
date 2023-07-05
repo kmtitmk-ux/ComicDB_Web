@@ -8,6 +8,7 @@ export const createComic = /* GraphQL */ `
   ) {
     createComic(input: $input, condition: $condition) {
       id
+      addLike
       createdAt
       description
       errorCount
@@ -28,6 +29,7 @@ export const updateComic = /* GraphQL */ `
   ) {
     updateComic(input: $input, condition: $condition) {
       id
+      addLike
       createdAt
       description
       errorCount
@@ -48,6 +50,7 @@ export const deleteComic = /* GraphQL */ `
   ) {
     deleteComic(input: $input, condition: $condition) {
       id
+      addLike
       createdAt
       description
       errorCount
@@ -58,6 +61,51 @@ export const deleteComic = /* GraphQL */ `
       title
       updatedAt
       url
+    }
+  }
+`;
+export const createComicEngagement = /* GraphQL */ `
+  mutation CreateComicEngagement(
+    $input: CreateComicEngagementInput!
+    $condition: ModelComicEngagementConditionInput
+  ) {
+    createComicEngagement(input: $input, condition: $condition) {
+      id
+      comicId
+      createdAt
+      dataType
+      updatedAt
+      userId
+    }
+  }
+`;
+export const updateComicEngagement = /* GraphQL */ `
+  mutation UpdateComicEngagement(
+    $input: UpdateComicEngagementInput!
+    $condition: ModelComicEngagementConditionInput
+  ) {
+    updateComicEngagement(input: $input, condition: $condition) {
+      id
+      comicId
+      createdAt
+      dataType
+      updatedAt
+      userId
+    }
+  }
+`;
+export const deleteComicEngagement = /* GraphQL */ `
+  mutation DeleteComicEngagement(
+    $input: DeleteComicEngagementInput!
+    $condition: ModelComicEngagementConditionInput
+  ) {
+    deleteComicEngagement(input: $input, condition: $condition) {
+      id
+      comicId
+      createdAt
+      dataType
+      updatedAt
+      userId
     }
   }
 `;

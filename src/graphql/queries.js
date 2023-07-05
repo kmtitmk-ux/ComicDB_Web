@@ -5,6 +5,7 @@ export const getComic = /* GraphQL */ `
   query GetComic($id: ID!) {
     getComic(id: $id) {
       id
+      addLike
       createdAt
       description
       errorCount
@@ -27,6 +28,7 @@ export const listComics = /* GraphQL */ `
     listComics(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        addLike
         createdAt
         description
         errorCount
@@ -37,6 +39,41 @@ export const listComics = /* GraphQL */ `
         title
         updatedAt
         url
+      }
+      nextToken
+    }
+  }
+`;
+export const getComicEngagement = /* GraphQL */ `
+  query GetComicEngagement($id: ID!) {
+    getComicEngagement(id: $id) {
+      id
+      comicId
+      createdAt
+      dataType
+      updatedAt
+      userId
+    }
+  }
+`;
+export const listComicEngagements = /* GraphQL */ `
+  query ListComicEngagements(
+    $filter: ModelComicEngagementFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listComicEngagements(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        comicId
+        createdAt
+        dataType
+        updatedAt
+        userId
       }
       nextToken
     }
@@ -61,6 +98,7 @@ export const comicsByStatusAndCreatedAt = /* GraphQL */ `
     ) {
       items {
         id
+        addLike
         createdAt
         description
         errorCount
@@ -95,6 +133,7 @@ export const comicsByStatusAndLike = /* GraphQL */ `
     ) {
       items {
         id
+        addLike
         createdAt
         description
         errorCount
@@ -129,6 +168,7 @@ export const comicsByStatusAndUpdatedAt = /* GraphQL */ `
     ) {
       items {
         id
+        addLike
         createdAt
         description
         errorCount
@@ -163,6 +203,7 @@ export const comicsByTitleAndUrl = /* GraphQL */ `
     ) {
       items {
         id
+        addLike
         createdAt
         description
         errorCount
@@ -173,6 +214,64 @@ export const comicsByTitleAndUrl = /* GraphQL */ `
         title
         updatedAt
         url
+      }
+      nextToken
+    }
+  }
+`;
+export const comicEngagementsByComicIdAndUserId = /* GraphQL */ `
+  query ComicEngagementsByComicIdAndUserId(
+    $comicId: String!
+    $userId: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelComicEngagementFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    comicEngagementsByComicIdAndUserId(
+      comicId: $comicId
+      userId: $userId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        comicId
+        createdAt
+        dataType
+        updatedAt
+        userId
+      }
+      nextToken
+    }
+  }
+`;
+export const comicEngagementsByUserIdAndCreatedAt = /* GraphQL */ `
+  query ComicEngagementsByUserIdAndCreatedAt(
+    $userId: String!
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelComicEngagementFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    comicEngagementsByUserIdAndCreatedAt(
+      userId: $userId
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        comicId
+        createdAt
+        dataType
+        updatedAt
+        userId
       }
       nextToken
     }

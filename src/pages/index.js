@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import { comicsByStatusAndCreatedAt, comicsByStatusAndLike } from '../graphql/queries';
+import { comicsByStatusAndCreatedAt, comicsByStatusAndLike, comicEngagementsByComicIdAndUserId } from '../graphql/queries';
 // import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 // import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 // import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
@@ -10,9 +10,8 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CompanyCard } from 'src/sections/companies/company-card';
 import { CompaniesSearch } from 'src/sections/companies/companies-search';
 import dayjs from 'dayjs';
-
 const Page = (props) => {
-    const { s3Bucket } = props;
+    const { s3Bucket, user, Auth, signIn, signOut } = props;
     const [companies, setCompanies] = useState([]);
     const [word, setWord] = React.useState('');
     const [sort, setSort] = React.useState('createdAt');
@@ -20,10 +19,11 @@ const Page = (props) => {
         variables: {
             status: 0,
             sortDirection: 'DESC',
-            limit: 15
+            limit: 18
         }
     });
     const fetchUsers = async (newSort = 'createdAt') => {
+        let outParam = [];
         try {
             switch (newSort) {
                 case 'createdAt':
@@ -39,17 +39,46 @@ const Page = (props) => {
             let response = await API.graphql(graphqlParam);
             graphqlParam.variables.nextToken = response.data[Object.keys(response.data)[0]].nextToken;
             setGraphqlParam(graphqlParam);
-            setCompanies(response.data[Object.keys(response.data)[0]].items);
+            outParam = response.data[Object.keys(response.data)[0]].items;
+            //　いいねフラグ取得
+            if (user) {
+                for (let i in outParam) await fetchUserLike(outParam[i]);
+            }
+            setCompanies(outParam);
         } catch (error) {
             console.log('Error fetching users', error);
         }
     };
+    const fetchUserLike = async (inParam) => {
+        try {
+            let params = {
+                variables: {
+                    comicId: inParam.id,
+                    userId: { eq: user.username }
+                },
+                query: comicEngagementsByComicIdAndUserId
+            };
+            let response = await API.graphql(params);
+            if (response.data.comicEngagementsByComicIdAndUserId.items.length) {
+                inParam.likeFlg = true;
+            } else {
+                inParam.likeFlg = false;
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    };
     const toggleVisibility = async () => {
+        let outParam = [];
         if (graphqlParam.variables.nextToken) {
             let response = await API.graphql(graphqlParam);
             graphqlParam.variables.nextToken = response.data[Object.keys(response.data)[0]].nextToken;
             setGraphqlParam(graphqlParam);
-            setCompanies([...companies, ...response.data[Object.keys(response.data)[0]].items]);
+            outParam = response.data[Object.keys(response.data)[0]].items;
+            for (let i in outParam) {
+                await fetchUserLike(outParam[i]);
+            }
+            setCompanies([...companies, ...outParam]);
         }
     };
     /**
@@ -78,7 +107,9 @@ const Page = (props) => {
         let response = await API.graphql(graphqlParam);
         console.info('API.graphql OUT:', response.data[Object.keys(response.data)[0]].items);
         graphqlParam.variables.nextToken = response.data[Object.keys(response.data)[0]].nextToken;
-        setCompanies(response.data[Object.keys(response.data)[0]].items);
+        let outParam = response.data[Object.keys(response.data)[0]].items;
+        for (let i in outParam) await fetchUserLike(outParam[i]);
+        setCompanies(outParam);
         setGraphqlParam(graphqlParam);
         setWord(isWord);
     };
@@ -93,15 +124,29 @@ const Page = (props) => {
     };
     useEffect(
         () => {
-            fetchUsers();
+            if (!user) {
+                for (let i in companies) {
+                    companies[i].likeFlg = false;
+                }
+                setCompanies(companies);
+            }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
+    useEffect(
+        () => {
+            (async () => {
+                await fetchUsers();
+            })();
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [user]
+    );
     return (
         <>
             <Head>
-                <title>最新のWeb漫画から検索 | 人気のWeb漫画が「0円」で読める【ComicDB】</title>
+                <title>最新のWeb漫画を検索 | 人気のWeb漫画を探すなら【ComicDB】</title>
             </Head>
             <Box
                 component="main"
@@ -199,6 +244,9 @@ const Page = (props) => {
                                         changeGraphqlParam={changeGraphqlParam}
                                         company={company}
                                         s3Bucket={s3Bucket}
+                                        user={user}
+                                        signIn={signIn}
+                                        signOut={signOut}
                                     />
                                 </Grid>
                             ))}
@@ -229,7 +277,6 @@ const Page = (props) => {
         </>
     );
 };
-
 
 Page.getLayout = (page) => (
     <DashboardLayout>

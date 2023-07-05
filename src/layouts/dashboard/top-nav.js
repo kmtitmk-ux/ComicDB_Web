@@ -21,7 +21,7 @@ const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
 export const TopNav = (props) => {
-    const { onNavOpen } = props;
+    const { onNavOpen, signOut, user } = props;
     const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
     const accountPopover = usePopover();
     return (
@@ -72,12 +72,12 @@ export const TopNav = (props) => {
                             </IconButton>
                         </Tooltip> */}
                     </Stack>
-                    {/* <Stack
+                    <Stack
                         alignItems="center"
                         direction="row"
                         spacing={2}
                     >
-                        <Tooltip title="Contacts">
+                        {/* <Tooltip title="Contacts">
                             <IconButton>
                                 <SvgIcon fontSize="small">
                                     <UsersIcon />
@@ -96,22 +96,30 @@ export const TopNav = (props) => {
                                     </SvgIcon>
                                 </Badge>
                             </IconButton>
-                        </Tooltip>
-                        <Avatar
-                            onClick={accountPopover.handleOpen}
-                            ref={accountPopover.anchorRef}
-                            sx={{
-                                cursor: 'pointer',
-                                height: 40,
-                                width: 40
-                            }}
-                            src="/assets/avatars/avatar-anika-visser.png"
-                        />
-                    </Stack> */}
+                        </Tooltip> */}
+                        {/* {(() => console.log(1))} */}
+                        {(() => {
+                            if (user) {
+                                return (
+                                    <Avatar
+                                        onClick={accountPopover.handleOpen}
+                                        ref={accountPopover.anchorRef}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            height: 40,
+                                            width: 40
+                                        }}
+                                        src="/assets/avatars/avatar-anika-visser.png"
+                                    />
+                                );
+                            }
+                        })()}
+                    </Stack>
                 </Stack>
             </Box>
             <AccountPopover
-                signOut={props.signOut}
+                user={user}
+                signOut={signOut}
                 anchorEl={accountPopover.anchorRef.current}
                 open={accountPopover.open}
                 onClose={accountPopover.handleClose}

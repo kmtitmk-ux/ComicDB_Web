@@ -4,6 +4,7 @@ input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONL
 
 type Comic @model {
   id: ID!
+  addLike: Int
   createdAt: AWSDateTime
   description: String
   errorCount: Int
@@ -17,4 +18,15 @@ type Comic @model {
   title: String @index(name: "byOrderByTitleByUrl", sortKeyFields:["url"])
   updatedAt: AWSDateTime
   url: String
+}
+
+type ComicEngagement @model {
+  id: ID!
+  comicId: String
+  @index(name: "byOrderByComicIdByUserId", sortKeyFields:["userId"])
+  createdAt: AWSDateTime
+  dataType: String
+  updatedAt: AWSDateTime
+  userId: String
+  @index(name: "byOrderByUserIdByCreatedAt", sortKeyFields:["createdAt"])
 }

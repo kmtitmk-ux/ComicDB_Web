@@ -15,13 +15,13 @@
       "function": {
         "ComicScraping": {
           "deploymentBucketName": "amplify-pf01-dev-163425-deployment",
-          "s3Key": "amplify-builds/ComicScraping-38393168356671664f4b-build.zip",
+          "s3Key": "amplify-builds/ComicScraping-53417671784373415a78-build.zip",
           "bucketsName": "pf014740a4bdfae54b9f9dfe9f39d0b14b2b163425-dev",
           "comicTable": "Comic-mr5b3lsoobgwxh3jtrqmgclg6a-dev"
         },
         "pf01NodeModules": {
           "deploymentBucketName": "amplify-pf01-dev-163425-deployment",
-          "s3Key": "amplify-builds/pf01NodeModules-LambdaLayerVersion778bcffd-build.zip"
+          "s3Key": "amplify-builds/pf01NodeModules-LambdaLayerVersionc0aaeb4c-build.zip"
         }
       },
       "api": {
@@ -31,7 +31,8 @@
         "s346b0016c": {}
       },
       "auth": {
-        "pf0175344fbb": {}
+        "pf0175344fbb": {},
+        "pf01": {}
       }
     }
   },
@@ -51,13 +52,13 @@
       "function": {
         "ComicScraping": {
           "deploymentBucketName": "amplify-pf01-prod-161302-deployment",
-          "s3Key": "amplify-builds/ComicScraping-3832547a6c79706c6e41-build.zip",
+          "s3Key": "amplify-builds/ComicScraping-53417671784373415a78-build.zip",
           "comicTable": "Comic-y3o753lztjf35hdxfs3lghqav4-prod",
           "bucketsName": "pf014740a4bdfae54b9f9dfe9f39d0b14b2b161302-prod"
         },
         "pf01NodeModules": {
           "deploymentBucketName": "amplify-pf01-prod-161302-deployment",
-          "s3Key": "amplify-builds/pf01NodeModules-LambdaLayerVersiona5d6b05d-build.zip"
+          "s3Key": "amplify-builds/pf01NodeModules-LambdaLayerVersionc02308c5-build.zip"
         }
       },
       "api": {

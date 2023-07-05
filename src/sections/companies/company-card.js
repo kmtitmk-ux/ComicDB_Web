@@ -1,12 +1,58 @@
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { API, graphqlOperation } from 'aws-amplify';
+import { comicEngagementsByComicIdAndUserId } from '../../graphql/queries';
+import { updateComic, createComicEngagement } from '../../graphql/mutations';
 import PropTypes from 'prop-types';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
 import { Avatar, Box, Card, Chip, CardContent, Divider, Link, Stack, SvgIcon, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import EllipsisVerticalIcon from '@heroicons/react/24/solid/EllipsisVerticalIcon';
 
 export const CompanyCard = (props) => {
-    const { company, changeGraphqlParam, s3Bucket } = props;
+    const { company, changeGraphqlParam, s3Bucket, user } = props;
+    const [comic, setComic] = useState(company);
+    const router = useRouter();
     const bucketUrl = 'https://' + s3Bucket + '.s3.ap-northeast-1.amazonaws.com/';
+    const clickLikeBtn = async (comic) => {
+        if (user) {
+            try {
+                comic.addLike = (comic.addLike) ? comic.addLike : 0;
+                // エンゲージメントに追加
+                let updateParam = {
+                    query: updateComic,
+                    variables: {
+                        input: {
+                            id: comic.id,
+                            like: comic.like + 1,
+                            addLike: comic.addLike + 1
+                        }
+                    },
+                };
+                const updateRes = await API.graphql(updateParam);
+                console.info('データが更新されました:', updateRes, updateRes.data.updateComic);
+                updateRes.data.updateComic.likeFlg = true;
+                setComic(updateRes.data.updateComic);
+                // エンゲージメントに追加
+                let putParam = {
+                    query: createComicEngagement,
+                    variables: {
+                        input: {
+                            comicId: comic.id,
+                            userId: user.username,
+                            dataType: 'like'
+                        }
+                    },
+                };
+                await API.graphql(putParam);
+            } catch (error) {
+                console.error('データの更新エラー:', error);
+            }
+        } else {
+            router.push('/auth/login');
+        }
+    };
     return (
         <Card
             sx={{
@@ -17,7 +63,7 @@ export const CompanyCard = (props) => {
         >
             <CardContent>
                 <Link
-                    href={company.url}
+                    href={comic.url}
                     target="_blank"
                     rel="noreferrer"
                 >
@@ -29,7 +75,7 @@ export const CompanyCard = (props) => {
                         }}
                     >
                         <Avatar
-                            src={bucketUrl + company.img}
+                            src={bucketUrl + comic.img}
                             variant="square"
                             sx={{ width: "100%", height: "auto", maxHeight: 170 }}
                         />
@@ -39,7 +85,7 @@ export const CompanyCard = (props) => {
                         gutterBottom
                         variant="h5"
                     >
-                        {company.title}
+                        {comic.title}
                     </Typography>
                 </Link>
                 <Stack
@@ -51,9 +97,8 @@ export const CompanyCard = (props) => {
                     }}
                 >
                     {(() => {
-                        let tags = [];
-                        if (company.tags) tags = JSON.parse(company.tags);
-                        let outParam = [];
+                        let tags = [], outParam = [];
+                        if (comic.tags) tags = JSON.parse(comic.tags);
                         for (let v of tags) {
                             outParam.push(<Chip
                                 key={v}
@@ -75,7 +120,7 @@ export const CompanyCard = (props) => {
                     align="left"
                     variant="subtitle2"
                 >
-                    {company.description}
+                    {comic.description}
                 </Typography>
             </CardContent>
             <Box sx={{ flexGrow: 1 }} />
@@ -92,42 +137,39 @@ export const CompanyCard = (props) => {
                     direction="row"
                     spacing={1}
                 >
-                    {/* <SvgIcon
-                        color="action"
-                        fontSize="small"
-                    >
-                        <ClockIcon />
-                    </SvgIcon> */}
                     <Typography
                         color="text.secondary"
                         display="inline"
                         variant="body2"
                     >
-                        {dayjs(company.createdAt).format('YYYY/MM/DD')}
+                        {dayjs(comic.createdAt).format('YYYY/MM/DD')}
                     </Typography>
                 </Stack>
+                {(() => {
+                    if (!user) comic.likeFlg = false;
+                })()}
                 <Stack
                     alignItems="center"
                     direction="row"
                     spacing={1}
+                    onClick={(() => (comic.likeFlg) ? null : clickLikeBtn(comic))}
                 >
                     <SvgIcon
-                        color="action"
                         fontSize="small"
+                        color={(() => (comic.likeFlg) ? "primary" : "action")()}
                     >
                         <FavoriteBorderIcon />
                     </SvgIcon>
                     <Typography
-                        color="text.secondary"
+                        color={(() => (comic.likeFlg) ? "#6366F1" : "text.secondary")()}
                         display="inline"
                         variant="body2"
                     >
-                        {company.like}
+                        {comic.like}
                     </Typography>
                 </Stack>
             </Stack>
         </Card>
-        // </Link>
     );
 };
 

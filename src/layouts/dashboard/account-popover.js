@@ -5,19 +5,24 @@ import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/mate
 import { useAuth } from 'src/hooks/use-auth';
 
 export const AccountPopover = (props) => {
-    const { anchorEl, onClose, open, signOut} = props;
+    const { anchorEl, onClose, open, signOut, user } = props;
     const router = useRouter();
     const auth = useAuth();
-
     const handleSignOut = useCallback(
         () => {
-            onClose?.();
-            auth.signOut();
-            router.push('/auth/login');
+            onClose();
+            signOut();
+            // router.push('/auth/login');
         },
-        [onClose, auth, router]
+        [onClose, signOut]
     );
-
+    // const signOut = async () => {
+    //     try {
+    //         await Auth.signOut();
+    //     } catch (error) {
+    //         console.log('error signing out: ', error);
+    //     }
+    // };
     return (
         <Popover
             anchorEl={anchorEl}
@@ -42,7 +47,7 @@ export const AccountPopover = (props) => {
                     color="text.secondary"
                     variant="body2"
                 >
-                    Anika Visser
+                    {(user) ? user.username : ''}
                 </Typography>
             </Box>
             <Divider />
@@ -56,9 +61,7 @@ export const AccountPopover = (props) => {
                     }
                 }}
             >
-                <MenuItem onClick={signOut}>
-                    Sign out
-                </MenuItem>
+                <MenuItem onClick={handleSignOut}>サインアウト</MenuItem>
             </MenuList>
         </Popover>
     );
