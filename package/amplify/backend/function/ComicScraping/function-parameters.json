@@ -1,0 +1,29 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "pf01NodeModules",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true,
+      "env": "dev"
+    }
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "comicTable",
+      "environmentVariableName": "ComicTable"
+    },
+    {
+      "cloudFormationParameterName": "bucketsName",
+      "environmentVariableName": "BucketsName"
+    },
+    {
+      "cloudFormationParameterName": "comicPageIdTable",
+      "environmentVariableName": "ComicPageIdTable"
+    },
+    {
+      "cloudFormationParameterName": "comicPageId",
+      "environmentVariableName": "ComicPageId"
+    }
+  ]
+}

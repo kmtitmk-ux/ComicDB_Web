@@ -1,0 +1,11 @@
+#sortBtn {
+  margin-bottom: 20px;
+}
+@media (max-width: 600px) {
+  #searchBtn {
+    padding-top: 0;
+  }
+  #sortBtn {
+    margin-top: 20px;
+  }
+}

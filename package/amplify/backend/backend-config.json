@@ -1,0 +1,137 @@
+{
+  "api": {
+    "pf01": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDate": "2024-07-18T08:53:05.924Z",
+              "apiKeyExpirationDays": 365,
+              "description": ""
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "pf01": {
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "managed"
+    }
+  },
+  "function": {
+    "ComicScraping": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "pf01NodeModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "pf01NodeModules": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
+    }
+  },
+  "hosting": {},
+  "parameters": {
+    "AMPLIFY_function_ComicScraping_bucketsName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_comicPageId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_comicPageIdTable": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_comicTable": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicScraping_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "s346b0016c": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "LambdaExecutionRole"
+          ],
+          "category": "function",
+          "resourceName": "ComicScraping"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
+  }
+}
