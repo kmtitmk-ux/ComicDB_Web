@@ -1,27 +1,28 @@
 {
-  "dev": {
+  "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-pf01-dev-163425-authRole",
-      "UnauthRoleArn": "arn:aws:iam::117880326767:role/amplify-pf01-dev-163425-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::117880326767:role/amplify-pf01-dev-163425-authRole",
+      "AuthRoleName": "amplify-pf01-prod-161302-authRole",
+      "UnauthRoleArn": "arn:aws:iam::117880326767:role/amplify-pf01-prod-161302-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::117880326767:role/amplify-pf01-prod-161302-authRole",
       "Region": "ap-northeast-1",
-      "DeploymentBucketName": "amplify-pf01-dev-163425-deployment",
-      "UnauthRoleName": "amplify-pf01-dev-163425-unauthRole",
-      "StackName": "amplify-pf01-dev-163425",
-      "StackId": "arn:aws:cloudformation:ap-northeast-1:117880326767:stack/amplify-pf01-dev-163425/bb1b2dc0-0505-11ee-98d7-067bd6e2202d",
+      "DeploymentBucketName": "amplify-pf01-prod-161302-deployment",
+      "UnauthRoleName": "amplify-pf01-prod-161302-unauthRole",
+      "StackName": "amplify-pf01-prod-161302",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:117880326767:stack/amplify-pf01-prod-161302/0facc030-1003-11ee-a034-0e4fb8bd42d9",
       "AmplifyAppId": "doumcfu7od9ou"
     },
     "categories": {
       "function": {
         "ComicScraping": {
-          "bucketsName": "pf014740a4bdfae54b9f9dfe9f39d0b14b2b163425-dev",
-          "comicPageId": "d6de343e-f877-4619-82ef-9cbdbc8e0d52",
-          "comicPageIdTable": "ComicPageId-mr5b3lsoobgwxh3jtrqmgclg6a-dev",
-          "comicTable": "Comic-mr5b3lsoobgwxh3jtrqmgclg6a-dev",
-          "deploymentBucketName": "amplify-pf01-dev-163425-deployment",
-          "s3Key": "amplify-builds/ComicScraping-312b3164544e65774d55-build.zip"
+          "bucketsName": "pf014740a4bdfae54b9f9dfe9f39d0b14b2b161302-prod",
+          "comicTable": "Comic-y3o753lztjf35hdxfs3lghqav4-prod",
+          "deploymentBucketName": "amplify-pf01-prod-161302-deployment",
+          "s3Key": "amplify-builds/ComicScraping-4a3762494a592b4f4c6b-build.zip"
         },
-        "pf01NodeModules": {}
+        "pf01NodeModules": {
+          "deploymentBucketName": "amplify-pf01-prod-161302-deployment",
+          "s3Key": "amplify-builds/pf01NodeModules-LambdaLayerVersionb92700f3-build.zip"
+        }
       },
       "auth": {
         "pf01": {}

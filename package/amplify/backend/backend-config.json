@@ -7,7 +7,7 @@
           "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDate": "2024-07-18T08:53:05.924Z",
+              "apiKeyExpirationDate": "2024-07-18T08:39:14.239Z",
               "apiKeyExpirationDays": 365,
               "description": ""
             },
@@ -76,22 +76,6 @@
         }
       ]
     },
-    "AMPLIFY_function_ComicScraping_comicPageId": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "ComicScraping"
-        }
-      ]
-    },
-    "AMPLIFY_function_ComicScraping_comicPageIdTable": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "ComicScraping"
-        }
-      ]
-    },
     "AMPLIFY_function_ComicScraping_comicTable": {
       "usedBy": [
         {
@@ -113,6 +97,22 @@
         {
           "category": "function",
           "resourceName": "ComicScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_pf01NodeModules_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "pf01NodeModules"
+        }
+      ]
+    },
+    "AMPLIFY_function_pf01NodeModules_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "pf01NodeModules"
         }
       ]
     }

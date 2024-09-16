@@ -5,7 +5,7 @@ Amplify Params - DO NOT EDIT */
 
 const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const s3 = new S3Client({});
-const { DynamoDBClient, QueryCommand, PutItemCommand, GetItemCommand, UpdateItemCommand, BatchWriteItemCommand } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBClient, QueryCommand, BatchWriteItemCommand } = require('@aws-sdk/client-dynamodb');
 const dynamoDBClient = new DynamoDBClient({});
 const axios = require('axios');
 const cheerio = require('cheerio');
@@ -51,36 +51,6 @@ exports.handler = async (event) => {
             let c = 0;
             for (let v of scrapingData) {
                 if (!writeRequests[c]) writeRequests.push([]);
-                // 現在のpageIDを取得
-                let getParam = {
-                    TableName: process.env.ComicPageIdTable,
-                    Key: { id: { S: process.env.ComicPageId } },
-                };
-                let getResult = await dynamoDBClient.send(new GetItemCommand(getParam));
-                // 新しいpageIDを作成
-                let pageId = 0;
-                pageId = Number(getResult.Item.pageId.N);
-                let updateResult;
-                do {
-                    pageId++;
-                    try {
-                        let updateParam = {
-                            TableName: process.env.ComicPageIdTable,
-                            Key: { id: { S: process.env.ComicPageId } },
-                            UpdateExpression: 'SET pageId = :newPageId, updatedAt = :updatedAt',
-                            ExpressionAttributeValues: {
-                                ':newPageId': { N: String(pageId) },
-                                ':updatedAt': { S: dayjs().format() }
-                            },
-                            ConditionExpression: 'pageId < :newPageId',
-                            ReturnValues: 'ALL_NEW'
-                        };
-                        updateResult = await dynamoDBClient.send(new UpdateItemCommand(updateParam));
-                    } catch (e) {
-                        if (e.errorType !== 'ConditionalCheckFailedException') throw e;
-                    }
-                } while (updateResult.Item.pageId.N !== String(pageId));
-                // Comicデータ追加
                 writeRequests[c].push({
                     PutRequest: {
                         Item: {
@@ -95,7 +65,6 @@ exports.handler = async (event) => {
                             url: { S: v.url },
                             status: { N: '0' },
                             title: { S: v.title },
-                            pageId: { N: String(pageId) },
                             '__typename': { S: 'Comic' }
                         }
                     }
@@ -154,51 +123,6 @@ exports.handler = async (event) => {
                 writeRequests.push({ PutRequest: { Item: v } });
             }
             break;
-        }
-        case 'resetPageId': {
-            // let putParam = {
-            //     TableName: process.env.ComicPageIdTable,
-            //     Item: {
-            //         id: { S: uuidv4() },
-            //         pageId: { N: '0' },
-            //         createdAt: { S: dayjs().format() },
-            //         updatedAt: { S: dayjs().format() },
-            //         '__typename': { S: 'ComicPageId' }
-            //     }
-            // };
-            // let putResult = await dynamoDBClient.send(new PutItemCommand(putParam));
-            // console.info('PutItemCommand OUT:', putResult);
-
-            // pageIDを取得
-            let pageId = 0;
-            let getParam = {
-                TableName: process.env.ComicPageIdTable,
-                Key: { id: { S: process.env.ComicPageId } }
-            };
-            let getResult = await dynamoDBClient.send(new GetItemCommand(getParam));
-            console.info('GetItemCommand OUT:', getResult);
-            pageId = Number(getResult.Item.pageId.N);
-            let updateResult;
-            do {
-                pageId++;
-                try {
-                    let updateParam = {
-                        TableName: process.env.ComicPageIdTable,
-                        Key: { id: { S: process.env.ComicPageId } },
-                        UpdateExpression: 'SET pageId = :newPageId, updatedAt = :updatedAt',
-                        ExpressionAttributeValues: {
-                            ':newPageId': { N: String(pageId) },
-                            ':updatedAt': { S: dayjs().format() }
-                        },
-                        ConditionExpression: 'pageId < :newPageId',
-                        ReturnValues: 'ALL_NEW'
-                    };
-                    updateResult = await dynamoDBClient.send(new UpdateItemCommand(updateParam));
-                } catch (e) {
-                    if (e.errorType !== 'ConditionalCheckFailedException') throw e;
-                }
-            } while (updateResult.Item.pageId.N !== String(pageId));
-            return;
         }
         default:
     };

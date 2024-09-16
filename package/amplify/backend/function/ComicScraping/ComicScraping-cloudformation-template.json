@@ -25,12 +25,6 @@
     },
     "bucketsName": {
       "Type": "String"
-    },
-    "comicPageIdTable": {
-      "Type": "String"
-    },
-    "comicPageId": {
-      "Type": "String"
     }
   },
   "Conditions": {
@@ -91,12 +85,6 @@
             },
             "BucketsName": {
               "Ref": "bucketsName"
-            },
-            "ComicPageIdTable": {
-              "Ref": "comicPageIdTable"
-            },
-            "ComicPageId": {
-              "Ref": "comicPageId"
             }
           }
         },

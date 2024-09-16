@@ -30,9 +30,3 @@ type ComicEngagement @model {
   userId: String
   @index(name: "byOrderByUserIdByCreatedAt", sortKeyFields:["createdAt"])
 }
-
-type ComicPageId @model {
-  id: ID!
-  pageId: Int
-  updatedAt: AWSDateTime
-}

@@ -5,7 +5,7 @@
       "resourceName": "pf01NodeModules",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true,
-      "env": "dev"
+      "env": "prod"
     }
   ],
   "environmentVariableList": [
@@ -16,14 +16,6 @@
     {
       "cloudFormationParameterName": "bucketsName",
       "environmentVariableName": "BucketsName"
-    },
-    {
-      "cloudFormationParameterName": "comicPageIdTable",
-      "environmentVariableName": "ComicPageIdTable"
-    },
-    {
-      "cloudFormationParameterName": "comicPageId",
-      "environmentVariableName": "ComicPageId"
     }
   ]
 }
