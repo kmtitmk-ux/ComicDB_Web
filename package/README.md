@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -33,39 +32,3 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-=======
-# <a href="https://modernize-nextjs-free.vercel.app/?ref=5">Modernize-nextjs-free</a>
-Modernize Free Next.js 14 Admin Template with Material Ui + Typescript 
-<!-- Place this tag where you want the button to render. -->
-<a class="github-button" href="https://github.com/adminmart/Modernize-Nextjs-Free" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large" aria-label="Star adminmart/Modernize-Nextjs-Free on GitHub">Give a Star</a>
-<!-- Main image of Template -->
-
-  <img src="https://adminmart.com/wp-content/uploads/2023/03/modernize-free-next-js-admin-template.png" />
-
-
-
-# Installation 👨🏻‍💻
-
-> We recommend you use npm
-
-1. Install all packages
-
-```
-npm i
-```
-
-2. Run Development Server
-
-```
-npm run dev
-```
-
-3. Build your project
-
-```
-npm run build
-```
-
-
-
->>>>>>> hotfix/0917
