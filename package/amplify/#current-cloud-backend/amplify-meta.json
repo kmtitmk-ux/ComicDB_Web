@@ -1,0 +1,42 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-comicdb-dev-3010a-authRole",
+      "UnauthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-dev-3010a-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-dev-3010a-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
+      "UnauthRoleName": "amplify-comicdb-dev-3010a-unauthRole",
+      "StackName": "amplify-comicdb-dev-3010a",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:117880326767:stack/amplify-comicdb-dev-3010a/c8762950-74be-11ef-9aa8-061f18f0a941",
+      "AmplifyAppId": "d3nfiuy4d6mp2w"
+    }
+  },
+  "api": {
+    "comicdb": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            }
+          },
+          "additionalAuthenticationProviders": []
+        },
+        "GraphQLAPIIdOutput": "dvc5b63fpnewnfwpbqxigm66xy",
+        "GraphQLAPIEndpointOutput": "https://bum2qbys55bfloi6ji4fgh3p7u.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-affdrgleuzbnpbd63ygcqdfw5i"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-comicdb-dev-3010a-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apicomicdb"
+      },
+      "lastPushTimeStamp": "2024-09-17T06:46:02.615Z",
+      "lastPushDirHash": "X2kicxh/VBRcl9JlvpHY1DntFqU="
+    }
+  }
+}
