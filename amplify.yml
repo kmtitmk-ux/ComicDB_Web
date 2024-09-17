@@ -1,0 +1,27 @@
+version: 1
+applications:
+  - appRoot: package
+    backend:
+      phases:
+        preBuild:
+          commands:
+            - ls
+        build:
+          commands:
+            - amplifyPush --simple
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - ls
+            - npm ci
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - "**/*"
+      cache:
+        paths:
+          - node_modules/**/*

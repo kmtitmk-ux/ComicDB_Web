@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-comicdb-dev-3010a-authRole",
+      "UnauthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-dev-3010a-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-dev-3010a-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
+      "UnauthRoleName": "amplify-comicdb-dev-3010a-unauthRole",
+      "StackName": "amplify-comicdb-dev-3010a",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:117880326767:stack/amplify-comicdb-dev-3010a/c8762950-74be-11ef-9aa8-061f18f0a941",
+      "AmplifyAppId": "d3nfiuy4d6mp2w"
+    }
+  }
+}
