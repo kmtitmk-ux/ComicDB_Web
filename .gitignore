@@ -1,6 +1,7 @@
 
 
 #amplify-do-not-edit-begin
+amplify/.config/local-*
 amplify/\#current-cloud-backend
 amplify/.config/local-*
 amplify/logs
