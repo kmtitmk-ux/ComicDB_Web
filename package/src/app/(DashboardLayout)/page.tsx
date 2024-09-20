@@ -18,6 +18,7 @@ import CustomTextField from "@/app/(DashboardLayout)/components/forms/theme-elem
 // components
 import InfiniteScroller from "@/myComponents/InfiniteScroller";
 import "@/style.scss";
+Amplify.configure(config);
 
 const Dashboard = () => {
   const [word, setWord] = useState<string>("");

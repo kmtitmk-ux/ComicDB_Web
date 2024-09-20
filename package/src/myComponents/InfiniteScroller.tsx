@@ -45,7 +45,9 @@ export default function InfiniteScroller({
           nextToken: token,
         },
       };
+      console.info("req", param);
       const result: any = await client.graphql(param);
+      console.info("res", result);
       const outParam: any = { ...list };
       if (result.data[queryName]) {
         setNextToken(result.data[queryName].nextToken ?? null);
@@ -59,7 +61,9 @@ export default function InfiniteScroller({
           setList(outParam);
         }
       }
-    } catch (_) {}
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(
