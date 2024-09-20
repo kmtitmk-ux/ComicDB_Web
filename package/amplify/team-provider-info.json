@@ -1,4 +1,35 @@
 {
+  "main": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-comicdb-main-715b3-authRole",
+      "UnauthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-main-715b3-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-main-715b3-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-comicdb-main-715b3-deployment",
+      "UnauthRoleName": "amplify-comicdb-main-715b3-unauthRole",
+      "StackName": "amplify-comicdb-main-715b3",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:117880326767:stack/amplify-comicdb-main-715b3/eaeb7910-770f-11ef-8071-0ee23470cc41",
+      "AmplifyAppId": "d3nfiuy4d6mp2w"
+    },
+    "categories": {
+      "auth": {
+        "comicdbeb6dc8fc": {}
+      },
+      "function": {
+        "ComicDbScraping": {
+          "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
+          "s3Key": "amplify-builds/ComicDbScraping-694f7535653156453378-build.zip"
+        },
+        "comicdbModules": {
+          "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
+          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersion268292c4-build.zip"
+        }
+      },
+      "storage": {
+        "comicdb": {}
+      }
+    }
+  },
   "dev": {
     "awscloudformation": {
       "AuthRoleName": "amplify-comicdb-dev-3010a-authRole",
@@ -24,40 +55,6 @@
       },
       "auth": {
         "comicdbeb6dc8fc": {}
-      },
-      "api": {
-        "comicdb": {}
-      },
-      "storage": {
-        "comicdb": {}
-      }
-    }
-  },
-  "prod": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-comicdb-prod-fefb8-authRole",
-      "UnauthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-prod-fefb8-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-prod-fefb8-authRole",
-      "Region": "ap-northeast-1",
-      "DeploymentBucketName": "amplify-comicdb-prod-fefb8-deployment",
-      "UnauthRoleName": "amplify-comicdb-prod-fefb8-unauthRole",
-      "StackName": "amplify-comicdb-prod-fefb8",
-      "StackId": "arn:aws:cloudformation:ap-northeast-1:117880326767:stack/amplify-comicdb-prod-fefb8/9a7ce1e0-76d2-11ef-943b-0683217776b3",
-      "AmplifyAppId": "d3nfiuy4d6mp2w"
-    },
-    "categories": {
-      "auth": {
-        "comicdbeb6dc8fc": {}
-      },
-      "function": {
-        "ComicDbScraping": {
-          "deploymentBucketName": "amplify-comicdb-prod-fefb8-deployment",
-          "s3Key": "amplify-builds/ComicDbScraping-337649674a6b78504731-build.zip"
-        },
-        "comicdbModules": {
-          "deploymentBucketName": "amplify-comicdb-prod-fefb8-deployment",
-          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersione3816f6a-build.zip"
-        }
       },
       "api": {
         "comicdb": {}
