@@ -2,6 +2,11 @@
   "dev": {
     "configLevel": "project",
     "useProfile": false,
-    "awsConfigFilePath": "C:\\Users\\kmtit\\.amplify\\awscloudformation\\FXGvO3AStx"
+    "awsConfigFilePath": "C:\\Users\\kmtit\\.amplify\\awscloudformation\\h2FBNS8MGl"
+  },
+  "prod": {
+    "configLevel": "project",
+    "useProfile": false,
+    "awsConfigFilePath": "C:\\Users\\kmtit\\.amplify\\awscloudformation\\2kZIXbK18K"
   }
 }

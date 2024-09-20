@@ -14,29 +14,135 @@
   },
   "api": {
     "comicdb": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "output": {
         "authConfig": {
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 7
-            }
-          },
-          "additionalAuthenticationProviders": []
+            },
+            "authenticationType": "API_KEY"
+          }
         },
         "GraphQLAPIIdOutput": "dvc5b63fpnewnfwpbqxigm66xy",
         "GraphQLAPIEndpointOutput": "https://bum2qbys55bfloi6ji4fgh3p7u.appsync-api.ap-northeast-1.amazonaws.com/graphql",
         "GraphQLAPIKeyOutput": "da2-affdrgleuzbnpbd63ygcqdfw5i"
       },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2024-09-20T05:06:25.895Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-comicdb-dev-3010a-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apicomicdb"
+      }
+    }
+  },
+  "auth": {
+    "comicdbeb6dc8fc": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
       },
-      "lastPushTimeStamp": "2024-09-17T06:46:02.615Z",
-      "lastPushDirHash": "X2kicxh/VBRcl9JlvpHY1DntFqU="
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "ap-northeast-1_j7lgXsV5s",
+        "AppClientIDWeb": "3bd6soli80mh3ttg9vt1fs0sga",
+        "AppClientID": "5io7n1e9io66ntt9vc9jj47h2u",
+        "IdentityPoolId": "ap-northeast-1:b41b1067-cef5-4b86-93e3-c99e2f983759",
+        "UserPoolArn": "arn:aws:cognito-idp:ap-northeast-1:117880326767:userpool/ap-northeast-1_j7lgXsV5s",
+        "IdentityPoolName": "comicdbeb6dc8fc_identitypool_eb6dc8fc__dev",
+        "UserPoolName": "comicdbeb6dc8fc_userpool_eb6dc8fc"
+      },
+      "lastPushTimeStamp": "2024-09-20T05:06:25.901Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-comicdb-dev-3010a-deployment/amplify-cfn-templates/auth/comicdbeb6dc8fc-cloudformation-template.json",
+        "logicalId": "authcomicdbeb6dc8fc"
+      }
+    }
+  },
+  "function": {
+    "ComicDbScraping": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "comicdbModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::117880326767:role/comicdbLambdaRole77b7f6af-dev",
+        "Region": "ap-northeast-1",
+        "Arn": "arn:aws:lambda:ap-northeast-1:117880326767:function:ComicDbScraping-dev",
+        "Name": "ComicDbScraping-dev",
+        "LambdaExecutionRole": "comicdbLambdaRole77b7f6af-dev",
+        "CloudWatchEventRule": "amplify-comicdb-dev-3010a-functionC-CloudWatchEvent-jMGgEINNjBE7"
+      },
+      "lastPushTimeStamp": "2024-09-20T05:06:26.396Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-comicdb-dev-3010a-deployment/amplify-cfn-templates/function/ComicDbScraping-cloudformation-template.json",
+        "logicalId": "functionComicDbScraping"
+      },
+      "lastBuildTimeStamp": "2024-09-20T05:05:22.497Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-09-20T05:05:22.547Z",
+      "distZipFilename": "ComicDbScraping-337649674a6b78504731-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
+        "s3Key": "amplify-builds/ComicDbScraping-337649674a6b78504731-build.zip"
+      },
+      "lastPushDirHash": "UGU8f7aB5l59bXhxnlISQMzl8V8="
+    },
+    "comicdbModules": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "output": {
+        "Arn": "arn:aws:lambda:ap-northeast-1:117880326767:layer:comicdbModules-dev:2"
+      },
+      "lastPushTimeStamp": "2024-09-20T05:06:25.912Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-comicdb-dev-3010a-deployment/amplify-cfn-templates/function/comicdbModules-awscloudformation-template.json",
+        "logicalId": "functioncomicdbModules"
+      }
+    }
+  },
+  "storage": {
+    "comicdb": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
+      "output": {
+        "BucketName": "comicdb4ec1987bcc0e49149860186233ff425a3010a-dev",
+        "Region": "ap-northeast-1"
+      },
+      "lastPushTimeStamp": "2024-09-20T05:06:25.916Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-comicdb-dev-3010a-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storagecomicdb"
+      }
     }
   }
 }

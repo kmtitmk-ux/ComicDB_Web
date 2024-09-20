@@ -8,6 +8,7 @@ import { IconArrowUpLeft } from "@tabler/icons-react";
 import { Comic } from "@/API";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import dayjs from "dayjs";
+import config from "@/aws-exports.js";
 
 const ComicList = ({
   data,
@@ -18,7 +19,7 @@ const ComicList = ({
 }) => {
   const { createdAt, id, img, like, url, tags, title } = data;
   const tagCloud: string[] = tags ? JSON.parse(tags) : [];
-  const imgPath = `https://pf014740a4bdfae54b9f9dfe9f39d0b14b2b163425-dev.s3.ap-northeast-1.amazonaws.com/${img}`;
+  const imgPath = `https://${config.aws_user_files_s3_bucket}.s3.ap-northeast-1.amazonaws.com/${img}`;
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const primarylight = "#ecf2ff";

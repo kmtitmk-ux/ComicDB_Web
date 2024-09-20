@@ -1,0 +1,15 @@
+{
+  "resourceName": "comicdb",
+  "policyUUID": "45c314a9",
+  "bucketName": "comicdb4ec1987bcc0e49149860186233ff425a",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "groupAccess": {}
+}

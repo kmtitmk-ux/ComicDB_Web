@@ -10,6 +10,61 @@
       "StackName": "amplify-comicdb-dev-3010a",
       "StackId": "arn:aws:cloudformation:ap-northeast-1:117880326767:stack/amplify-comicdb-dev-3010a/c8762950-74be-11ef-9aa8-061f18f0a941",
       "AmplifyAppId": "d3nfiuy4d6mp2w"
+    },
+    "categories": {
+      "function": {
+        "ComicDbScraping": {
+          "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
+          "s3Key": "amplify-builds/ComicDbScraping-337649674a6b78504731-build.zip"
+        },
+        "comicdbModules": {
+          "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
+          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersion66ace81b-build.zip"
+        }
+      },
+      "auth": {
+        "comicdbeb6dc8fc": {}
+      },
+      "api": {
+        "comicdb": {}
+      },
+      "storage": {
+        "comicdb": {}
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-comicdb-prod-fefb8-authRole",
+      "UnauthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-prod-fefb8-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::117880326767:role/amplify-comicdb-prod-fefb8-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-comicdb-prod-fefb8-deployment",
+      "UnauthRoleName": "amplify-comicdb-prod-fefb8-unauthRole",
+      "StackName": "amplify-comicdb-prod-fefb8",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:117880326767:stack/amplify-comicdb-prod-fefb8/9a7ce1e0-76d2-11ef-943b-0683217776b3",
+      "AmplifyAppId": "d3nfiuy4d6mp2w"
+    },
+    "categories": {
+      "auth": {
+        "comicdbeb6dc8fc": {}
+      },
+      "function": {
+        "ComicDbScraping": {
+          "deploymentBucketName": "amplify-comicdb-prod-fefb8-deployment",
+          "s3Key": "amplify-builds/ComicDbScraping-337649674a6b78504731-build.zip"
+        },
+        "comicdbModules": {
+          "deploymentBucketName": "amplify-comicdb-prod-fefb8-deployment",
+          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersione3816f6a-build.zip"
+        }
+      },
+      "api": {
+        "comicdb": {}
+      },
+      "storage": {
+        "comicdb": {}
+      }
     }
   }
 }
