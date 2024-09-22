@@ -271,28 +271,29 @@ async function getHtmlData(inUrl, procType, pageData) {
     });
   // 画像取得
   for (let i in outParam) {
-    const parsedUrl = url.parse(outParam[i].imageUrl);
-    const ext = path.extname(parsedUrl.pathname) ?? ".jpg";
-    // S3に追加
-    await axios
-      .get(outParam[i].imageUrl, { responseType: "arraybuffer" })
-      .then(async (res) => {
-        outParam[i].imageUrl =
-          dayjs(outParam[i].date).format("public/YYYY/MM/DD/") +
-          dayjs().valueOf() +
-          ext;
-        let putObjParam = {
-          Bucket: process.env.BucketsName,
-          Key: outParam[i].imageUrl,
-          Body: Buffer.from(res.data),
-        };
-        console.info("PutObject REQ", putObjParam);
-        const putResult = await s3.send(new PutObjectCommand(putObjParam));
-        console.info("PutObject RES", putResult);
-      })
-      .catch((error) => {
-        console.error("エラーが発生しました", error);
+    try {
+      const res = await axios.get(outParam[i].imageUrl);
+      const ext = res.headers.get("content-type").replace("image/", ".");
+      console.log(ext);
+      // S3に追加
+      const buffer = await axios.get(outParam[i].imageUrl, {
+        responseType: "arraybuffer",
       });
+      outParam[i].imageUrl =
+        dayjs(outParam[i].date).format("public/YYYY/MM/DD/") +
+        dayjs().valueOf() +
+        ext;
+      const putObjParam = {
+        Bucket: process.env.BucketsName,
+        Key: outParam[i].imageUrl,
+        Body: Buffer.from(buffer.data),
+      };
+      console.info("PutObject REQ", putObjParam);
+      const putResult = await s3.send(new PutObjectCommand(putObjParam));
+      console.info("PutObject RES", putResult);
+    } catch (e) {
+      console.error("エラーが発生しました", e);
+    }
   }
   console.info("getHtmlData OUT:", outParam);
   return outParam;

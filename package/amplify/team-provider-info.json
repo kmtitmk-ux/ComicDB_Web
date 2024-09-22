@@ -15,11 +15,11 @@
       "function": {
         "ComicDbScraping": {
           "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
-          "s3Key": "amplify-builds/ComicDbScraping-337649674a6b78504731-build.zip"
+          "s3Key": "amplify-builds/ComicDbScraping-694f7535653156453378-build.zip"
         },
         "comicdbModules": {
           "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
-          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersion66ace81b-build.zip"
+          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersiona76ff8eb-build.zip"
         }
       },
       "auth": {
