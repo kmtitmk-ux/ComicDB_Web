@@ -15,7 +15,9 @@
       "function": {
         "ComicDbScraping": {
           "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
-          "s3Key": "amplify-builds/ComicDbScraping-694f7535653156453378-build.zip"
+          "s3Key": "amplify-builds/ComicDbScraping-38704e43665162343346-build.zip",
+          "bucketsName": "comicdb4ec1987bcc0e49149860186233ff425a3010a-dev",
+          "comicTable": "Comic-dvc5b63fpnewnfwpbqxigm66xy-dev"
         },
         "comicdbModules": {
           "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
@@ -52,7 +54,9 @@
       "function": {
         "ComicDbScraping": {
           "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
-          "s3Key": "amplify-builds/ComicDbScraping-337649674a6b78504731-build.zip"
+          "s3Key": "amplify-builds/ComicDbScraping-38704e43665162343346-build.zip",
+          "bucketsName": "comicdb4ec1987bcc0e49149860186233ff425a715b3-main",
+          "comicTable": "Comic-ljn56c4v4vfo3iogsvonsdzcv4-main"
         },
         "comicdbModules": {
           "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",

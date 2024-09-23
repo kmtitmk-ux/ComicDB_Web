@@ -65,6 +65,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_ComicDbScraping_bucketsName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicDbScraping"
+        }
+      ]
+    },
+    "AMPLIFY_function_ComicDbScraping_comicTable": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ComicDbScraping"
+        }
+      ]
+    },
     "AMPLIFY_function_ComicDbScraping_deploymentBucketName": {
       "usedBy": [
         {

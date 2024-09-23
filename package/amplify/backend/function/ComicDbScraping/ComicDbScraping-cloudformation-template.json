@@ -19,6 +19,12 @@
     "functioncomicdbModulesArn": {
       "Type": "String",
       "Default": "functioncomicdbModulesArn"
+    },
+    "bucketsName": {
+      "Type": "String"
+    },
+    "comicTable": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -73,6 +79,12 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "BucketsName": {
+              "Ref": "bucketsName"
+            },
+            "ComicTable": {
+              "Ref": "comicTable"
             }
           }
         },

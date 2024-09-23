@@ -5,7 +5,25 @@
       "resourceName": "comicdbModules",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true,
-      "env": "dev"
+      "env": "main"
+    }
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "bucketsName",
+      "environmentVariableName": "BucketsName"
+    },
+    {
+      "cloudFormationParameterName": "comicTable",
+      "environmentVariableName": "ComicTable"
+    },
+    {
+      "cloudFormationParameterName": "bucketsName",
+      "environmentVariableName": "BucketsName"
+    },
+    {
+      "cloudFormationParameterName": "comicTable",
+      "environmentVariableName": "ComicTable"
     }
   ]
 }
