@@ -1,7 +1,5 @@
 "use client";
 import { useState, FormEvent, useEffect } from "react";
-import { Amplify } from "aws-amplify";
-import config from "@/aws-exports.js";
 import {
   Box,
   Button,
@@ -18,7 +16,6 @@ import CustomTextField from "@/app/(DashboardLayout)/components/forms/theme-elem
 // components
 import InfiniteScroller from "@/myComponents/InfiniteScroller";
 import "@/style.scss";
-Amplify.configure(config);
 
 const Dashboard = () => {
   const [word, setWord] = useState<string>("");
@@ -29,9 +26,6 @@ const Dashboard = () => {
     const formData = new FormData(form);
     if (formData.get("word") !== word) setWord(formData.get("word") as string);
   };
-  useEffect(() => {
-    const test = "a";
-  }, [sort]);
   return (
     <PageContainer title="Dashboard" description="this is Dashboard">
       <Box>

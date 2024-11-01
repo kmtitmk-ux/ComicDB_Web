@@ -74,7 +74,7 @@ const ComicList = ({
   const seriescolumnchart: any = [38, 40, 25];
 
   return (
-    <DashboardCard title={title ?? ""} url={url ?? ""}>
+    <DashboardCard title={title ?? ""} url={id && "/comics/" + id}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <a href={url ?? "#"} target="_blank" rel="noopener noreferrer">

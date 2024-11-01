@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
   headsubtitle?: string | JSX.Element;
   children?: JSX.Element;
   middlecontent?: string | JSX.Element;
-  url?: string;
+  url?: string | undefined;
 };
 
 const DashboardCard = ({
@@ -38,7 +39,11 @@ const DashboardCard = ({
       ) : (
         <CardContent sx={{ p: "30px" }}>
           {title ? (
-            <a href={url} target="_blank" rel="noopener noreferrer">
+            <Link
+              href={url ?? "#"}
+              style={{ position: "relative", zIndex: "1" }}
+              target={url && url.indexOf("http") !== -1 ? "_blank" : "_top"}
+            >
               <Stack
                 direction="row"
                 spacing={2}
@@ -57,7 +62,7 @@ const DashboardCard = ({
                 </Box>
                 {action}
               </Stack>
-            </a>
+            </Link>
           ) : null}
           {children}
         </CardContent>
