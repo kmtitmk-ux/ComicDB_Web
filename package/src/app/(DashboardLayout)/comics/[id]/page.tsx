@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Grid, Typography, Box } from "@mui/material";
@@ -52,12 +53,18 @@ const ComicPage = () => {
                       marginBottom: 10,
                     }}
                   >
-                    <Image
-                      fill
-                      src={`https://${config.aws_user_files_s3_bucket}.s3.ap-northeast-1.amazonaws.com/${comic?.img}`}
-                      alt=""
-                      style={{ objectFit: "cover" }}
-                    />
+                    <Link
+                      href={comic?.url ?? "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Image
+                        fill
+                        src={`https://${config.aws_user_files_s3_bucket}.s3.ap-northeast-1.amazonaws.com/${comic?.img}`}
+                        alt=""
+                        style={{ objectFit: "cover" }}
+                      />
+                    </Link>
                   </Box>
                 )}
                 <Typography>{comic?.description ?? ""}</Typography>
