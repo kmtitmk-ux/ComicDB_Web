@@ -66,22 +66,27 @@ exports.handler = async (event) => {
       let c = 0;
       for (let v of scrapingData) {
         if (!writeRequests[c]) writeRequests.push([]);
+        let item = {
+          id: { S: uuidv4() },
+          createdAt: { S: dayjs(v.date).format() },
+          errCount: { N: "0" },
+          description: { S: v.description },
+          img: { S: v.imageUrl },
+          like: { N: String(v.like) },
+          tags: { S: v.tags },
+          updatedAt: { S: dayjs().format() },
+          url: { S: v.url },
+          status: { N: "0" },
+          title: { S: v.title },
+          officialTitle: { S: v.officialTitle },
+          author: { S: v.author },
+          __typename: { S: "Comic" },
+        };
+        if (!v.officialTitle) delete item.officialTitle;
+        if (!v.author) delete item.author;
         writeRequests[c].push({
           PutRequest: {
-            Item: {
-              id: { S: uuidv4() },
-              createdAt: { S: dayjs(v.date).format() },
-              errCount: { N: "0" },
-              description: { S: v.description },
-              img: { S: v.imageUrl },
-              like: { N: String(v.like) },
-              tags: { S: v.tags },
-              updatedAt: { S: dayjs().format() },
-              url: { S: v.url },
-              status: { N: "0" },
-              title: { S: v.title },
-              __typename: { S: "Comic" },
-            },
+            Item: item,
           },
         });
         if (writeRequests[c].length % 25 === 0) c++;
@@ -253,6 +258,7 @@ async function getHtmlData(inUrl, procType, pageData) {
           new QueryCommand(queryParam)
         );
         console.info("Query RES", queryResult);
+        let editValue = await editOfficialTitleAndAuthor(title.trim());
         if (!queryResult.Count) {
           outParam.push({
             date: date,
@@ -261,6 +267,8 @@ async function getHtmlData(inUrl, procType, pageData) {
             like: like,
             tags: tags,
             title: title.trim(),
+            officialTitle: editValue.officialTitle,
+            author: editValue.author,
             url: url,
           });
         }
@@ -274,7 +282,6 @@ async function getHtmlData(inUrl, procType, pageData) {
     try {
       const res = await axios.get(outParam[i].imageUrl);
       const ext = res.headers.get("content-type").replace("image/", ".");
-      console.log(ext);
       // S3に追加
       const buffer = await axios.get(outParam[i].imageUrl, {
         responseType: "arraybuffer",
@@ -296,6 +303,23 @@ async function getHtmlData(inUrl, procType, pageData) {
     }
   }
   console.info("getHtmlData OUT:", outParam);
+  return outParam;
+}
+
+// 正式タイトル名を作成する
+async function editOfficialTitleAndAuthor(title) {
+  const regex = / \| 少年ジャンプ＋$/;
+  const outParam = {
+    officialTitle: "",
+    author: "",
+  };
+  if (regex.test(title)) {
+    let edit = title.replace(regex, "").replace(/^\[.*?\]/, "");
+    edit = edit.split(" - ");
+    outParam.officialTitle = edit[0] ?? "";
+    outParam.author = edit[1] ?? "";
+  }
+  console.info("editOfficialTitleAndAuthor", outParam);
   return outParam;
 }
 

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { signUp, signIn } from "aws-amplify/auth";
 import { Grid, Box, Card, Stack, Typography } from "@mui/material";
 // components
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
@@ -35,7 +36,7 @@ const Login2 = () => {
             xs={12}
             sm={12}
             md={4}
-            xl={3}
+            xl={4}
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -44,20 +45,25 @@ const Login2 = () => {
               elevation={9}
               sx={{ p: 4, zIndex: 1, width: "100%", maxWidth: "500px" }}
             >
-              <Box display="flex" alignItems="center" justifyContent="center">
+              <Box
+                mb={2}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
                 <Logo />
               </Box>
               <AuthLogin
-                subtext={
-                  <Typography
-                    variant="subtitle1"
-                    textAlign="center"
-                    color="textSecondary"
-                    mb={1}
-                  >
-                    Your Social Campaigns
-                  </Typography>
-                }
+                // subtext={
+                //   <Typography
+                //     variant="subtitle1"
+                //     textAlign="center"
+                //     color="textSecondary"
+                //     mb={1}
+                //   >
+                //     Your Social Campaigns
+                //   </Typography>
+                // }
                 subtitle={
                   <Stack
                     direction="row"
@@ -70,7 +76,7 @@ const Login2 = () => {
                       variant="h6"
                       fontWeight="500"
                     >
-                      New to Modernize?
+                      ComicDB は初めてですか?
                     </Typography>
                     <Typography
                       component={Link}
@@ -81,7 +87,7 @@ const Login2 = () => {
                         color: "primary.main",
                       }}
                     >
-                      Create an account
+                      アカウントを作成する
                     </Typography>
                   </Stack>
                 }

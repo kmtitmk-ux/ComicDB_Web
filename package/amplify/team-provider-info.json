@@ -14,24 +14,24 @@
     "categories": {
       "function": {
         "ComicDbScraping": {
-          "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
-          "s3Key": "amplify-builds/ComicDbScraping-38704e43665162343346-build.zip",
           "bucketsName": "comicdb4ec1987bcc0e49149860186233ff425a3010a-dev",
-          "comicTable": "Comic-dvc5b63fpnewnfwpbqxigm66xy-dev"
+          "comicTable": "Comic-dvc5b63fpnewnfwpbqxigm66xy-dev",
+          "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
+          "s3Key": "amplify-builds/ComicDbScraping-58686d594e5159376f37-build.zip"
         },
         "comicdbModules": {
           "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
-          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersiona76ff8eb-build.zip"
+          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersion5a6266e0-build.zip"
         }
       },
-      "auth": {
-        "comicdbeb6dc8fc": {}
+      "storage": {
+        "comicdb": {}
       },
       "api": {
         "comicdb": {}
       },
-      "storage": {
-        "comicdb": {}
+      "auth": {
+        "comicdbeb6dc8fc": {}
       }
     }
   },
@@ -48,20 +48,20 @@
       "AmplifyAppId": "d3nfiuy4d6mp2w"
     },
     "categories": {
-      "auth": {
-        "comicdbeb6dc8fc": {}
-      },
       "function": {
         "ComicDbScraping": {
-          "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
-          "s3Key": "amplify-builds/ComicDbScraping-38704e43665162343346-build.zip",
           "bucketsName": "comicdb4ec1987bcc0e49149860186233ff425a715b3-main",
-          "comicTable": "Comic-ljn56c4v4vfo3iogsvonsdzcv4-main"
+          "comicTable": "Comic-ljn56c4v4vfo3iogsvonsdzcv4-main",
+          "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
+          "s3Key": "amplify-builds/ComicDbScraping-38704e43665162343346-build.zip"
         },
         "comicdbModules": {
           "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
-          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersion268292c4-build.zip"
+          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersion9ba2f0af-build.zip"
         }
+      },
+      "auth": {
+        "comicdbeb6dc8fc": {}
       },
       "storage": {
         "comicdb": {}

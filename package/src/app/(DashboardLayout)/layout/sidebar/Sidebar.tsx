@@ -2,7 +2,9 @@ import Image from "next/image";
 import { useMediaQuery, Box, Drawer } from "@mui/material";
 import SidebarItems from "./SidebarItems";
 import { Upgrade } from "./Updrade";
-import { Sidebar, Logo } from "react-mui-sidebar";
+import { Sidebar } from "react-mui-sidebar";
+
+import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
 
 interface ItemType {
   isMobileSidebarOpen: boolean;
@@ -76,22 +78,16 @@ const MSidebar = ({
                   position: "relative",
                   width: "90%",
                   height: "50px",
-                  margin: "auto",
+                  margin: "15px auto auto",
                 }}
               >
-                <Image
-                  src="/images/logos/ComicDB.png"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  alt=""
-                  priority
-                />
+                <Logo />
               </div>
               <Box>
                 {/* ------------------------------------------- */}
                 {/* Sidebar Items */}
                 {/* ------------------------------------------- */}
-                <SidebarItems />
+                {/* <SidebarItems /> */}
                 {/* <Upgrade /> */}
               </Box>
             </Sidebar>
@@ -136,21 +132,15 @@ const MSidebar = ({
               position: "relative",
               width: "90%",
               height: "50px",
-              margin: "auto",
+              margin: "15px auto auto",
             }}
           >
-            <Image
-              src="/images/logos/ComicDB.png"
-              fill
-              style={{ objectFit: "cover" }}
-              alt=""
-              priority
-            />
+            <Logo />
           </div>
           {/* ------------------------------------------- */}
           {/* Sidebar Items */}
           {/* ------------------------------------------- */}
-          <SidebarItems />
+          {/* <SidebarItems /> */}
           {/* <Upgrade /> */}
         </Sidebar>
       </Box>

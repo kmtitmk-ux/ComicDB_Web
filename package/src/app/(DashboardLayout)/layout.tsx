@@ -1,9 +1,9 @@
 "use client";
-import { styled, Container, Box } from "@mui/material";
 import React, { useState } from "react";
+
+import { styled, Container, Box } from "@mui/material";
 import Header from "@/app/(DashboardLayout)/layout/header/Header";
 import Sidebar from "@/app/(DashboardLayout)/layout/sidebar/Sidebar";
-
 
 const MainWrapper = styled("div")(() => ({
   display: "flex",
@@ -24,15 +24,10 @@ interface Props {
   children: React.ReactNode;
 }
 
-
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: Props) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
   return (
     <MainWrapper className="mainwrapper">
       {/* ------------------------------------------- */}
@@ -50,7 +45,7 @@ export default function RootLayout({
         {/* ------------------------------------------- */}
         {/* Header */}
         {/* ------------------------------------------- */}
-        {/* <Header toggleMobileSidebar={() => setMobileSidebarOpen(true)} /> */}
+        <Header toggleMobileSidebar={() => setMobileSidebarOpen(true)} />
         {/* ------------------------------------------- */}
         {/* PageContent */}
         {/* ------------------------------------------- */}
@@ -63,7 +58,9 @@ export default function RootLayout({
           {/* ------------------------------------------- */}
           {/* Page Route */}
           {/* ------------------------------------------- */}
-          <Box sx={{ minHeight: "calc(100vh - 170px)" }}>{children}</Box>
+          <Box sx={{ minHeight: "calc(100vh - 170px)" }}>
+            {children}
+          </Box>
           {/* ------------------------------------------- */}
           {/* End Page */}
           {/* ------------------------------------------- */}

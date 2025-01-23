@@ -16,6 +16,12 @@ type Comic @model {
   @index(name: "byOrderByStatusByUpdatedAt", sortKeyFields:["updatedAt"])
   tags: String
   title: String @index(name: "byOrderByTitleByUrl", sortKeyFields:["url"])
+  officialTitle: String
+  @index(name: "byOrderByOfficialTitleByCreatedAt", sortKeyFields:["createdAt"])
+  @index(name: "byOrderByOfficialTitleByLike", sortKeyFields:["like"])
+  author: String
+  @index(name: "byOrderByAuthorByCreatedAt", sortKeyFields:["createdAt"])
+  @index(name: "byOrderByAuthorByLike", sortKeyFields:["like"])
   updatedAt: AWSDateTime
   url: String
 }

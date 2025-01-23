@@ -20,6 +20,8 @@ export const onCreateComic = /* GraphQL */ `subscription OnCreateComic($filter: 
     status
     tags
     title
+    officialTitle
+    author
     updatedAt
     url
     __typename
@@ -41,6 +43,8 @@ export const onUpdateComic = /* GraphQL */ `subscription OnUpdateComic($filter: 
     status
     tags
     title
+    officialTitle
+    author
     updatedAt
     url
     __typename
@@ -62,6 +66,8 @@ export const onDeleteComic = /* GraphQL */ `subscription OnDeleteComic($filter: 
     status
     tags
     title
+    officialTitle
+    author
     updatedAt
     url
     __typename

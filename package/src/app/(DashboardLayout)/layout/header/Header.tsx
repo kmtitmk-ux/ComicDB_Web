@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { signOut } from "aws-amplify/auth";
+
 import {
   Box,
   AppBar,
@@ -10,10 +13,11 @@ import {
   Button,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import Link from "next/link";
+
 // components
 import Profile from "./Profile";
 import { IconBellRinging, IconMenu } from "@tabler/icons-react";
+import UserAuth from "@/myComponents/UserAuth";
 
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
@@ -22,6 +26,16 @@ interface ItemType {
 const Header = ({ toggleMobileSidebar }: ItemType) => {
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const [signInFlg, setSignIn] = useState(false);
+  const user = UserAuth();
+
+  useEffect(() => {
+    if (user.userId) {
+      setSignIn(true);
+    } else {
+      setSignIn(false);
+    }
+  }, [user]);
 
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: "none",
@@ -32,6 +46,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
       minHeight: "70px",
     },
   }));
+
   const ToolbarStyled = styled(Toolbar)(({ theme }) => ({
     width: "100%",
     color: theme.palette.text.secondary,
@@ -53,7 +68,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         >
           <IconMenu width="20" height="20" />
         </IconButton>
-        <IconButton
+        {/* <IconButton
           size="large"
           aria-label="show 11 new notifications"
           color="inherit"
@@ -63,19 +78,35 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
           <Badge variant="dot" color="primary">
             <IconBellRinging size="21" stroke="1.5" />
           </Badge>
-        </IconButton>
+        </IconButton> */}
         <Box flexGrow={1} />
+
         <Stack spacing={1} direction="row" alignItems="center">
-          <Button
-            variant="contained"
-            component={Link}
-            href="/authentication/login"
-            disableElevation
-            color="primary"
-          >
-            Login
-          </Button>
-          <Profile />
+          {signInFlg && (
+            <Button
+              variant="contained"
+              disableElevation
+              color="primary"
+              onClick={async () => {
+                await signOut();
+                setSignIn(false);
+              }}
+            >
+              サインアウト
+            </Button>
+          )}
+          {!signInFlg && (
+            <Button
+              variant="contained"
+              component={Link}
+              href="/authentication/login"
+              disableElevation
+              color="primary"
+            >
+              サインイン
+            </Button>
+          )}
+          {/* <Profile /> */}
         </Stack>
       </ToolbarStyled>
     </AppBarStyled>

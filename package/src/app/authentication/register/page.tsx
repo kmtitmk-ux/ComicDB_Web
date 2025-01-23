@@ -33,7 +33,7 @@ const Register2 = () => (
           xs={12}
           sm={12}
           md={4}
-          xl={3}
+          xl={4}
           display="flex"
           justifyContent="center"
           alignItems="center"
@@ -42,20 +42,25 @@ const Register2 = () => (
             elevation={9}
             sx={{ p: 4, zIndex: 1, width: "100%", maxWidth: "500px" }}
           >
-            <Box display="flex" alignItems="center" justifyContent="center">
+            <Box
+              mb={2}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
               <Logo />
             </Box>
             <AuthRegister
-              subtext={
-                <Typography
-                  variant="subtitle1"
-                  textAlign="center"
-                  color="textSecondary"
-                  mb={1}
-                >
-                  Your Social Campaigns
-                </Typography>
-              }
+              // subtext={
+              //   <Typography
+              //     variant="subtitle1"
+              //     textAlign="center"
+              //     color="textSecondary"
+              //     mb={1}
+              //   >
+              //     Your Social Campaigns
+              //   </Typography>
+              // }
               subtitle={
                 <Stack
                   direction="row"
@@ -68,18 +73,18 @@ const Register2 = () => (
                     variant="h6"
                     fontWeight="400"
                   >
-                    Already have an Account?
+                    すでにアカウントをお持ちですか？
                   </Typography>
                   <Typography
                     component={Link}
                     href="/authentication/login"
-                    fontWeight="500"
+                    // fontWeight="500"
                     sx={{
                       textDecoration: "none",
                       color: "primary.main",
                     }}
                   >
-                    Sign In
+                    サインイン
                   </Typography>
                 </Stack>
               }

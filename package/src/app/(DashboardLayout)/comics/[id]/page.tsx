@@ -37,7 +37,7 @@ const ComicPage = () => {
   return (
     <>
       <PageContainer
-        title={comic?.title ?? ""}
+        title={`${comic?.title ? comic.title : ""}`}
         description={comic?.description ?? ""}
       >
         <Grid container spacing={3}>

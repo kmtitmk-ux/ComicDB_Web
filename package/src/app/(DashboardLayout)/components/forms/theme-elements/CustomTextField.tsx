@@ -3,15 +3,16 @@ import { styled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
 
 const CustomTextField = styled((props: any) => {
-  const [inputVal, setInputVal] = useState<string>("");
-  const { word } = props;
+  const { id, word } = props;
+  const [inputVal, setInputVal] = useState<string>(word);
   useEffect(() => {
     setInputVal(word);
   }, [word]);
+
   return (
     <TextField
       {...props}
-      name="word"
+      name={id}
       value={inputVal}
       onChange={(e: ChangeEvent<HTMLInputElement>) =>
         setInputVal(e.target.value)

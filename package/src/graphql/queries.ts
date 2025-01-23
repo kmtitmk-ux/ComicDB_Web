@@ -20,6 +20,8 @@ export const getComic = /* GraphQL */ `query GetComic($id: ID!) {
     status
     tags
     title
+    officialTitle
+    author
     updatedAt
     url
     __typename
@@ -43,6 +45,8 @@ export const listComics = /* GraphQL */ `query ListComics(
       status
       tags
       title
+      officialTitle
+      author
       updatedAt
       url
       __typename
@@ -120,6 +124,8 @@ export const comicsByStatusAndCreatedAt = /* GraphQL */ `query ComicsByStatusAnd
       status
       tags
       title
+      officialTitle
+      author
       updatedAt
       url
       __typename
@@ -159,6 +165,8 @@ export const comicsByStatusAndLike = /* GraphQL */ `query ComicsByStatusAndLike(
       status
       tags
       title
+      officialTitle
+      author
       updatedAt
       url
       __typename
@@ -198,6 +206,8 @@ export const comicsByStatusAndUpdatedAt = /* GraphQL */ `query ComicsByStatusAnd
       status
       tags
       title
+      officialTitle
+      author
       updatedAt
       url
       __typename
@@ -237,6 +247,8 @@ export const comicsByTitleAndUrl = /* GraphQL */ `query ComicsByTitleAndUrl(
       status
       tags
       title
+      officialTitle
+      author
       updatedAt
       url
       __typename
@@ -248,6 +260,170 @@ export const comicsByTitleAndUrl = /* GraphQL */ `query ComicsByTitleAndUrl(
 ` as GeneratedQuery<
   APITypes.ComicsByTitleAndUrlQueryVariables,
   APITypes.ComicsByTitleAndUrlQuery
+>;
+export const comicsByOfficialTitleAndCreatedAt = /* GraphQL */ `query ComicsByOfficialTitleAndCreatedAt(
+  $officialTitle: String!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelComicFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  comicsByOfficialTitleAndCreatedAt(
+    officialTitle: $officialTitle
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      addLike
+      createdAt
+      description
+      errorCount
+      img
+      like
+      status
+      tags
+      title
+      officialTitle
+      author
+      updatedAt
+      url
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ComicsByOfficialTitleAndCreatedAtQueryVariables,
+  APITypes.ComicsByOfficialTitleAndCreatedAtQuery
+>;
+export const comicsByOfficialTitleAndLike = /* GraphQL */ `query ComicsByOfficialTitleAndLike(
+  $officialTitle: String!
+  $like: ModelIntKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelComicFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  comicsByOfficialTitleAndLike(
+    officialTitle: $officialTitle
+    like: $like
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      addLike
+      createdAt
+      description
+      errorCount
+      img
+      like
+      status
+      tags
+      title
+      officialTitle
+      author
+      updatedAt
+      url
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ComicsByOfficialTitleAndLikeQueryVariables,
+  APITypes.ComicsByOfficialTitleAndLikeQuery
+>;
+export const comicsByAuthorAndCreatedAt = /* GraphQL */ `query ComicsByAuthorAndCreatedAt(
+  $author: String!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelComicFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  comicsByAuthorAndCreatedAt(
+    author: $author
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      addLike
+      createdAt
+      description
+      errorCount
+      img
+      like
+      status
+      tags
+      title
+      officialTitle
+      author
+      updatedAt
+      url
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ComicsByAuthorAndCreatedAtQueryVariables,
+  APITypes.ComicsByAuthorAndCreatedAtQuery
+>;
+export const comicsByAuthorAndLike = /* GraphQL */ `query ComicsByAuthorAndLike(
+  $author: String!
+  $like: ModelIntKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelComicFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  comicsByAuthorAndLike(
+    author: $author
+    like: $like
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      addLike
+      createdAt
+      description
+      errorCount
+      img
+      like
+      status
+      tags
+      title
+      officialTitle
+      author
+      updatedAt
+      url
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ComicsByAuthorAndLikeQueryVariables,
+  APITypes.ComicsByAuthorAndLikeQuery
 >;
 export const comicEngagementsByComicIdAndUserId = /* GraphQL */ `query ComicEngagementsByComicIdAndUserId(
   $comicId: String!

@@ -1,4 +1,5 @@
 import { Dispatch, MouseEvent, SetStateAction } from "react";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { useTheme } from "@mui/material/styles";
@@ -13,10 +14,13 @@ import config from "@/aws-exports.js";
 const ComicList = ({
   data,
   setWord,
+  user,
 }: {
   data: Comic;
   setWord: Dispatch<SetStateAction<string>>;
+  user: any;
 }) => {
+  const router = useRouter();
   const { createdAt, id, img, like, url, tags, title } = data;
   const tagCloud: string[] = tags ? JSON.parse(tags) : [];
   const imgPath = `https://${config.aws_user_files_s3_bucket}.s3.ap-northeast-1.amazonaws.com/${img}`;
@@ -109,7 +113,15 @@ const ComicList = ({
                 {dayjs(createdAt).format("YYYY/MM/DD")}
               </Typography>
             </Stack>
-            <Stack>
+            <Stack
+              onClick={() => {
+                if (user.userId) {
+                  console.log("like button");
+                } else {
+                  router.push("/authentication/register");
+                }
+              }}
+            >
               <FavoriteBorderIcon />
               <Typography variant="subtitle2" color="textSecondary">
                 {like}

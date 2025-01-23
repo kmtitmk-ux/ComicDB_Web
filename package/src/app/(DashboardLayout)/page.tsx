@@ -1,5 +1,5 @@
 "use client";
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import {
   Box,
   Button,
@@ -15,26 +15,38 @@ import PageContainer from "@/app/(DashboardLayout)/components/container/PageCont
 import CustomTextField from "@/app/(DashboardLayout)/components/forms/theme-elements/CustomTextField";
 // components
 import InfiniteScroller from "@/myComponents/InfiniteScroller";
+import UserAuth from "@/myComponents/UserAuth";
 import "@/style.scss";
 
 const Dashboard = () => {
   const [word, setWord] = useState<string>("");
   const [sort, setSort] = useState<string>("createdAt");
+  const user = UserAuth();
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
     if (formData.get("word") !== word) setWord(formData.get("word") as string);
   };
+
   return (
-    <PageContainer title="Dashboard" description="this is Dashboard">
+    <PageContainer
+      title="Web漫画のデータベースでお気に入りを見つけよう"
+      description="ComicDBは、あなたの好きなWeb漫画を簡単に検索・管理できるデータベース型アプリです。ジャンル別に漫画を探し、お気に入りの作品をブックマークして、いつでもアクセスできます。新しい漫画の発見やお気に入りの整理に最適！"
+    >
       <Box>
         <form id="searchForm" onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={4}>
               <Stack>
                 <Box>
-                  <CustomTextField word={word} variant="outlined" fullWidth />
+                  <CustomTextField
+                    id="word"
+                    word={word}
+                    variant="outlined"
+                    fullWidth
+                  />
                 </Box>
                 <Stack
                   justifyContent="space-between"
@@ -73,7 +85,12 @@ const Dashboard = () => {
             人気順
           </Button>
         </ButtonGroup>
-        <InfiniteScroller word={word} sort={sort} setWord={setWord} />
+        <InfiniteScroller
+          word={word}
+          sort={sort}
+          setWord={setWord}
+          user={user}
+        />
       </Box>
     </PageContainer>
   );

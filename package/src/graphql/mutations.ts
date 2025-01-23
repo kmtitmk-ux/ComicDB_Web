@@ -23,6 +23,8 @@ export const createComic = /* GraphQL */ `mutation CreateComic(
     status
     tags
     title
+    officialTitle
+    author
     updatedAt
     url
     __typename
@@ -47,6 +49,8 @@ export const updateComic = /* GraphQL */ `mutation UpdateComic(
     status
     tags
     title
+    officialTitle
+    author
     updatedAt
     url
     __typename
@@ -71,6 +75,8 @@ export const deleteComic = /* GraphQL */ `mutation DeleteComic(
     status
     tags
     title
+    officialTitle
+    author
     updatedAt
     url
     __typename

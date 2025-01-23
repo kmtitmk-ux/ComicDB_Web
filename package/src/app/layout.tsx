@@ -1,16 +1,25 @@
 "use client";
+import { useEffect } from "react";
 import { Amplify } from "aws-amplify";
+import Image from "next/image";
+import Script from "next/script";
 import config from "@/aws-exports.js";
-import { baselightTheme } from "@/utils/theme/DefaultColors";
+
+import { Link, useMediaQuery } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Script from "next/script";
+import { baselightTheme } from "@/utils/theme/DefaultColors";
+
+import Logo from "@/app/(DashboardLayout)/layout/shared/logo/Logo";
+
 Amplify.configure(config);
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const mbUp = useMediaQuery("(max-width:1199px)");
+
   return (
     <html lang="ja">
       {/* Google Tag Manager */}
@@ -39,6 +48,18 @@ export default function RootLayout({
         <ThemeProvider theme={baselightTheme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
+          {mbUp && (
+            <div
+              style={{
+                position: "relative",
+                width: "243px",
+                height: "50px",
+                margin: "15px auto auto",
+              }}
+            >
+              <Logo />
+            </div>
+          )}
           {children}
         </ThemeProvider>
       </body>
