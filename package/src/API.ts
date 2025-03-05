@@ -129,46 +129,54 @@ export type DeleteComicInput = {
   id: string,
 };
 
-export type CreateComicEngagementInput = {
+export type CreateCDB02Input = {
   id?: string | null,
-  comicId?: string | null,
+  postId?: string | null,
   createdAt?: string | null,
+  content?: string | null,
   dataType?: string | null,
+  reply?: string | null,
   updatedAt?: string | null,
   userId?: string | null,
 };
 
-export type ModelComicEngagementConditionInput = {
-  comicId?: ModelStringInput | null,
+export type ModelCDB02ConditionInput = {
+  postId?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
+  content?: ModelStringInput | null,
   dataType?: ModelStringInput | null,
+  reply?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   userId?: ModelStringInput | null,
-  and?: Array< ModelComicEngagementConditionInput | null > | null,
-  or?: Array< ModelComicEngagementConditionInput | null > | null,
-  not?: ModelComicEngagementConditionInput | null,
+  and?: Array< ModelCDB02ConditionInput | null > | null,
+  or?: Array< ModelCDB02ConditionInput | null > | null,
+  not?: ModelCDB02ConditionInput | null,
 };
 
-export type ComicEngagement = {
-  __typename: "ComicEngagement",
+export type CDB02 = {
+  __typename: "CDB02",
   id: string,
-  comicId?: string | null,
+  postId?: string | null,
   createdAt?: string | null,
+  content?: string | null,
   dataType?: string | null,
+  reply?: string | null,
   updatedAt?: string | null,
   userId?: string | null,
 };
 
-export type UpdateComicEngagementInput = {
+export type UpdateCDB02Input = {
   id: string,
-  comicId?: string | null,
+  postId?: string | null,
   createdAt?: string | null,
+  content?: string | null,
   dataType?: string | null,
+  reply?: string | null,
   updatedAt?: string | null,
   userId?: string | null,
 };
 
-export type DeleteComicEngagementInput = {
+export type DeleteCDB02Input = {
   id: string,
 };
 
@@ -214,21 +222,23 @@ export type ModelComicConnection = {
   nextToken?: string | null,
 };
 
-export type ModelComicEngagementFilterInput = {
+export type ModelCDB02FilterInput = {
   id?: ModelIDInput | null,
-  comicId?: ModelStringInput | null,
+  postId?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
+  content?: ModelStringInput | null,
   dataType?: ModelStringInput | null,
+  reply?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   userId?: ModelStringInput | null,
-  and?: Array< ModelComicEngagementFilterInput | null > | null,
-  or?: Array< ModelComicEngagementFilterInput | null > | null,
-  not?: ModelComicEngagementFilterInput | null,
+  and?: Array< ModelCDB02FilterInput | null > | null,
+  or?: Array< ModelCDB02FilterInput | null > | null,
+  not?: ModelCDB02FilterInput | null,
 };
 
-export type ModelComicEngagementConnection = {
-  __typename: "ModelComicEngagementConnection",
-  items:  Array<ComicEngagement | null >,
+export type ModelCDB02Connection = {
+  __typename: "ModelCDB02Connection",
+  items:  Array<CDB02 | null >,
   nextToken?: string | null,
 };
 
@@ -318,15 +328,17 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
-export type ModelSubscriptionComicEngagementFilterInput = {
+export type ModelSubscriptionCDB02FilterInput = {
   id?: ModelSubscriptionIDInput | null,
-  comicId?: ModelSubscriptionStringInput | null,
+  postId?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
+  content?: ModelSubscriptionStringInput | null,
   dataType?: ModelSubscriptionStringInput | null,
+  reply?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   userId?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionComicEngagementFilterInput | null > | null,
-  or?: Array< ModelSubscriptionComicEngagementFilterInput | null > | null,
+  and?: Array< ModelSubscriptionCDB02FilterInput | null > | null,
+  or?: Array< ModelSubscriptionCDB02FilterInput | null > | null,
 };
 
 export type CreateComicMutationVariables = {
@@ -404,52 +416,58 @@ export type DeleteComicMutation = {
   } | null,
 };
 
-export type CreateComicEngagementMutationVariables = {
-  input: CreateComicEngagementInput,
-  condition?: ModelComicEngagementConditionInput | null,
+export type CreateCDB02MutationVariables = {
+  input: CreateCDB02Input,
+  condition?: ModelCDB02ConditionInput | null,
 };
 
-export type CreateComicEngagementMutation = {
-  createComicEngagement?:  {
-    __typename: "ComicEngagement",
+export type CreateCDB02Mutation = {
+  createCDB02?:  {
+    __typename: "CDB02",
     id: string,
-    comicId?: string | null,
+    postId?: string | null,
     createdAt?: string | null,
+    content?: string | null,
     dataType?: string | null,
+    reply?: string | null,
     updatedAt?: string | null,
     userId?: string | null,
   } | null,
 };
 
-export type UpdateComicEngagementMutationVariables = {
-  input: UpdateComicEngagementInput,
-  condition?: ModelComicEngagementConditionInput | null,
+export type UpdateCDB02MutationVariables = {
+  input: UpdateCDB02Input,
+  condition?: ModelCDB02ConditionInput | null,
 };
 
-export type UpdateComicEngagementMutation = {
-  updateComicEngagement?:  {
-    __typename: "ComicEngagement",
+export type UpdateCDB02Mutation = {
+  updateCDB02?:  {
+    __typename: "CDB02",
     id: string,
-    comicId?: string | null,
+    postId?: string | null,
     createdAt?: string | null,
+    content?: string | null,
     dataType?: string | null,
+    reply?: string | null,
     updatedAt?: string | null,
     userId?: string | null,
   } | null,
 };
 
-export type DeleteComicEngagementMutationVariables = {
-  input: DeleteComicEngagementInput,
-  condition?: ModelComicEngagementConditionInput | null,
+export type DeleteCDB02MutationVariables = {
+  input: DeleteCDB02Input,
+  condition?: ModelCDB02ConditionInput | null,
 };
 
-export type DeleteComicEngagementMutation = {
-  deleteComicEngagement?:  {
-    __typename: "ComicEngagement",
+export type DeleteCDB02Mutation = {
+  deleteCDB02?:  {
+    __typename: "CDB02",
     id: string,
-    comicId?: string | null,
+    postId?: string | null,
     createdAt?: string | null,
+    content?: string | null,
     dataType?: string | null,
+    reply?: string | null,
     updatedAt?: string | null,
     userId?: string | null,
   } | null,
@@ -509,37 +527,41 @@ export type ListComicsQuery = {
   } | null,
 };
 
-export type GetComicEngagementQueryVariables = {
+export type GetCDB02QueryVariables = {
   id: string,
 };
 
-export type GetComicEngagementQuery = {
-  getComicEngagement?:  {
-    __typename: "ComicEngagement",
+export type GetCDB02Query = {
+  getCDB02?:  {
+    __typename: "CDB02",
     id: string,
-    comicId?: string | null,
+    postId?: string | null,
     createdAt?: string | null,
+    content?: string | null,
     dataType?: string | null,
+    reply?: string | null,
     updatedAt?: string | null,
     userId?: string | null,
   } | null,
 };
 
-export type ListComicEngagementsQueryVariables = {
-  filter?: ModelComicEngagementFilterInput | null,
+export type ListCDB02sQueryVariables = {
+  filter?: ModelCDB02FilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListComicEngagementsQuery = {
-  listComicEngagements?:  {
-    __typename: "ModelComicEngagementConnection",
+export type ListCDB02sQuery = {
+  listCDB02s?:  {
+    __typename: "ModelCDB02Connection",
     items:  Array< {
-      __typename: "ComicEngagement",
+      __typename: "CDB02",
       id: string,
-      comicId?: string | null,
+      postId?: string | null,
       createdAt?: string | null,
+      content?: string | null,
       dataType?: string | null,
+      reply?: string | null,
       updatedAt?: string | null,
       userId?: string | null,
     } | null >,
@@ -811,24 +833,26 @@ export type ComicsByAuthorAndLikeQuery = {
   } | null,
 };
 
-export type ComicEngagementsByComicIdAndUserIdQueryVariables = {
-  comicId: string,
+export type CDB02sByPostIdAndUserIdQueryVariables = {
+  postId: string,
   userId?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
-  filter?: ModelComicEngagementFilterInput | null,
+  filter?: ModelCDB02FilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ComicEngagementsByComicIdAndUserIdQuery = {
-  comicEngagementsByComicIdAndUserId?:  {
-    __typename: "ModelComicEngagementConnection",
+export type CDB02sByPostIdAndUserIdQuery = {
+  cDB02sByPostIdAndUserId?:  {
+    __typename: "ModelCDB02Connection",
     items:  Array< {
-      __typename: "ComicEngagement",
+      __typename: "CDB02",
       id: string,
-      comicId?: string | null,
+      postId?: string | null,
       createdAt?: string | null,
+      content?: string | null,
       dataType?: string | null,
+      reply?: string | null,
       updatedAt?: string | null,
       userId?: string | null,
     } | null >,
@@ -836,24 +860,26 @@ export type ComicEngagementsByComicIdAndUserIdQuery = {
   } | null,
 };
 
-export type ComicEngagementsByUserIdAndCreatedAtQueryVariables = {
+export type CDB02sByUserIdAndCreatedAtQueryVariables = {
   userId: string,
   createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
-  filter?: ModelComicEngagementFilterInput | null,
+  filter?: ModelCDB02FilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ComicEngagementsByUserIdAndCreatedAtQuery = {
-  comicEngagementsByUserIdAndCreatedAt?:  {
-    __typename: "ModelComicEngagementConnection",
+export type CDB02sByUserIdAndCreatedAtQuery = {
+  cDB02sByUserIdAndCreatedAt?:  {
+    __typename: "ModelCDB02Connection",
     items:  Array< {
-      __typename: "ComicEngagement",
+      __typename: "CDB02",
       id: string,
-      comicId?: string | null,
+      postId?: string | null,
       createdAt?: string | null,
+      content?: string | null,
       dataType?: string | null,
+      reply?: string | null,
       updatedAt?: string | null,
       userId?: string | null,
     } | null >,
@@ -933,49 +959,55 @@ export type OnDeleteComicSubscription = {
   } | null,
 };
 
-export type OnCreateComicEngagementSubscriptionVariables = {
-  filter?: ModelSubscriptionComicEngagementFilterInput | null,
+export type OnCreateCDB02SubscriptionVariables = {
+  filter?: ModelSubscriptionCDB02FilterInput | null,
 };
 
-export type OnCreateComicEngagementSubscription = {
-  onCreateComicEngagement?:  {
-    __typename: "ComicEngagement",
+export type OnCreateCDB02Subscription = {
+  onCreateCDB02?:  {
+    __typename: "CDB02",
     id: string,
-    comicId?: string | null,
+    postId?: string | null,
     createdAt?: string | null,
+    content?: string | null,
     dataType?: string | null,
+    reply?: string | null,
     updatedAt?: string | null,
     userId?: string | null,
   } | null,
 };
 
-export type OnUpdateComicEngagementSubscriptionVariables = {
-  filter?: ModelSubscriptionComicEngagementFilterInput | null,
+export type OnUpdateCDB02SubscriptionVariables = {
+  filter?: ModelSubscriptionCDB02FilterInput | null,
 };
 
-export type OnUpdateComicEngagementSubscription = {
-  onUpdateComicEngagement?:  {
-    __typename: "ComicEngagement",
+export type OnUpdateCDB02Subscription = {
+  onUpdateCDB02?:  {
+    __typename: "CDB02",
     id: string,
-    comicId?: string | null,
+    postId?: string | null,
     createdAt?: string | null,
+    content?: string | null,
     dataType?: string | null,
+    reply?: string | null,
     updatedAt?: string | null,
     userId?: string | null,
   } | null,
 };
 
-export type OnDeleteComicEngagementSubscriptionVariables = {
-  filter?: ModelSubscriptionComicEngagementFilterInput | null,
+export type OnDeleteCDB02SubscriptionVariables = {
+  filter?: ModelSubscriptionCDB02FilterInput | null,
 };
 
-export type OnDeleteComicEngagementSubscription = {
-  onDeleteComicEngagement?:  {
-    __typename: "ComicEngagement",
+export type OnDeleteCDB02Subscription = {
+  onDeleteCDB02?:  {
+    __typename: "CDB02",
     id: string,
-    comicId?: string | null,
+    postId?: string | null,
     createdAt?: string | null,
+    content?: string | null,
     dataType?: string | null,
+    reply?: string | null,
     updatedAt?: string | null,
     userId?: string | null,
   } | null,

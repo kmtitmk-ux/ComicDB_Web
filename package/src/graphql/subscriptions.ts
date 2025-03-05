@@ -77,54 +77,54 @@ export const onDeleteComic = /* GraphQL */ `subscription OnDeleteComic($filter: 
   APITypes.OnDeleteComicSubscriptionVariables,
   APITypes.OnDeleteComicSubscription
 >;
-export const onCreateComicEngagement = /* GraphQL */ `subscription OnCreateComicEngagement(
-  $filter: ModelSubscriptionComicEngagementFilterInput
-) {
-  onCreateComicEngagement(filter: $filter) {
+export const onCreateCDB02 = /* GraphQL */ `subscription OnCreateCDB02($filter: ModelSubscriptionCDB02FilterInput) {
+  onCreateCDB02(filter: $filter) {
     id
-    comicId
+    postId
     createdAt
+    content
     dataType
+    reply
     updatedAt
     userId
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnCreateComicEngagementSubscriptionVariables,
-  APITypes.OnCreateComicEngagementSubscription
+  APITypes.OnCreateCDB02SubscriptionVariables,
+  APITypes.OnCreateCDB02Subscription
 >;
-export const onUpdateComicEngagement = /* GraphQL */ `subscription OnUpdateComicEngagement(
-  $filter: ModelSubscriptionComicEngagementFilterInput
-) {
-  onUpdateComicEngagement(filter: $filter) {
+export const onUpdateCDB02 = /* GraphQL */ `subscription OnUpdateCDB02($filter: ModelSubscriptionCDB02FilterInput) {
+  onUpdateCDB02(filter: $filter) {
     id
-    comicId
+    postId
     createdAt
+    content
     dataType
+    reply
     updatedAt
     userId
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnUpdateComicEngagementSubscriptionVariables,
-  APITypes.OnUpdateComicEngagementSubscription
+  APITypes.OnUpdateCDB02SubscriptionVariables,
+  APITypes.OnUpdateCDB02Subscription
 >;
-export const onDeleteComicEngagement = /* GraphQL */ `subscription OnDeleteComicEngagement(
-  $filter: ModelSubscriptionComicEngagementFilterInput
-) {
-  onDeleteComicEngagement(filter: $filter) {
+export const onDeleteCDB02 = /* GraphQL */ `subscription OnDeleteCDB02($filter: ModelSubscriptionCDB02FilterInput) {
+  onDeleteCDB02(filter: $filter) {
     id
-    comicId
+    postId
     createdAt
+    content
     dataType
+    reply
     updatedAt
     userId
     __typename
   }
 }
 ` as GeneratedSubscription<
-  APITypes.OnDeleteComicEngagementSubscriptionVariables,
-  APITypes.OnDeleteComicEngagementSubscription
+  APITypes.OnDeleteCDB02SubscriptionVariables,
+  APITypes.OnDeleteCDB02Subscription
 >;

@@ -51,6 +51,14 @@ export default function InfiniteScroller({
    */
   const fetchData = async (changeWord: boolean) => {
     try {
+      // 古いデータを削除
+      if (changeWord) {
+        setList([]);
+        setNextToken("");
+        setOfficialTitleNextToken("");
+        setAuthorNextToken("");
+      }
+
       let items: any[] = [];
       const newExcludeFilter = changeWord ? [] : [...idFilter];
       const tokens = changeWord
@@ -118,7 +126,9 @@ export default function InfiniteScroller({
       if (changeWord) {
         setList(items);
       } else {
-        setList((preItems: any) => [...preItems, ...items]);
+        setList((preItems: any) => {
+          return [...preItems, ...items];
+        });
       }
     } catch (e) {
       console.error(e);
@@ -176,7 +186,7 @@ export default function InfiniteScroller({
     gsiParam.variables[searchType] = word;
 
     // トークン変更
-    if (searchType === "officialTitl" && tokens.officialTitleNextToken) {
+    if (searchType === "officialTitle" && tokens.officialTitleNextToken) {
       gsiParam.variables.nextToken = tokens.officialTitleNextToken;
     }
     if (searchType === "author" && tokens.authorNextToken) {

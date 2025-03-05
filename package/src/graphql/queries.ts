@@ -59,32 +59,33 @@ export const listComics = /* GraphQL */ `query ListComics(
   APITypes.ListComicsQueryVariables,
   APITypes.ListComicsQuery
 >;
-export const getComicEngagement = /* GraphQL */ `query GetComicEngagement($id: ID!) {
-  getComicEngagement(id: $id) {
+export const getCDB02 = /* GraphQL */ `query GetCDB02($id: ID!) {
+  getCDB02(id: $id) {
     id
-    comicId
+    postId
     createdAt
+    content
     dataType
+    reply
     updatedAt
     userId
     __typename
   }
 }
-` as GeneratedQuery<
-  APITypes.GetComicEngagementQueryVariables,
-  APITypes.GetComicEngagementQuery
->;
-export const listComicEngagements = /* GraphQL */ `query ListComicEngagements(
-  $filter: ModelComicEngagementFilterInput
+` as GeneratedQuery<APITypes.GetCDB02QueryVariables, APITypes.GetCDB02Query>;
+export const listCDB02s = /* GraphQL */ `query ListCDB02s(
+  $filter: ModelCDB02FilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listComicEngagements(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listCDB02s(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      comicId
+      postId
       createdAt
+      content
       dataType
+      reply
       updatedAt
       userId
       __typename
@@ -94,8 +95,8 @@ export const listComicEngagements = /* GraphQL */ `query ListComicEngagements(
   }
 }
 ` as GeneratedQuery<
-  APITypes.ListComicEngagementsQueryVariables,
-  APITypes.ListComicEngagementsQuery
+  APITypes.ListCDB02sQueryVariables,
+  APITypes.ListCDB02sQuery
 >;
 export const comicsByStatusAndCreatedAt = /* GraphQL */ `query ComicsByStatusAndCreatedAt(
   $status: Int!
@@ -425,16 +426,16 @@ export const comicsByAuthorAndLike = /* GraphQL */ `query ComicsByAuthorAndLike(
   APITypes.ComicsByAuthorAndLikeQueryVariables,
   APITypes.ComicsByAuthorAndLikeQuery
 >;
-export const comicEngagementsByComicIdAndUserId = /* GraphQL */ `query ComicEngagementsByComicIdAndUserId(
-  $comicId: String!
+export const cDB02sByPostIdAndUserId = /* GraphQL */ `query CDB02sByPostIdAndUserId(
+  $postId: String!
   $userId: ModelStringKeyConditionInput
   $sortDirection: ModelSortDirection
-  $filter: ModelComicEngagementFilterInput
+  $filter: ModelCDB02FilterInput
   $limit: Int
   $nextToken: String
 ) {
-  comicEngagementsByComicIdAndUserId(
-    comicId: $comicId
+  cDB02sByPostIdAndUserId(
+    postId: $postId
     userId: $userId
     sortDirection: $sortDirection
     filter: $filter
@@ -443,9 +444,11 @@ export const comicEngagementsByComicIdAndUserId = /* GraphQL */ `query ComicEnga
   ) {
     items {
       id
-      comicId
+      postId
       createdAt
+      content
       dataType
+      reply
       updatedAt
       userId
       __typename
@@ -455,18 +458,18 @@ export const comicEngagementsByComicIdAndUserId = /* GraphQL */ `query ComicEnga
   }
 }
 ` as GeneratedQuery<
-  APITypes.ComicEngagementsByComicIdAndUserIdQueryVariables,
-  APITypes.ComicEngagementsByComicIdAndUserIdQuery
+  APITypes.CDB02sByPostIdAndUserIdQueryVariables,
+  APITypes.CDB02sByPostIdAndUserIdQuery
 >;
-export const comicEngagementsByUserIdAndCreatedAt = /* GraphQL */ `query ComicEngagementsByUserIdAndCreatedAt(
+export const cDB02sByUserIdAndCreatedAt = /* GraphQL */ `query CDB02sByUserIdAndCreatedAt(
   $userId: String!
   $createdAt: ModelStringKeyConditionInput
   $sortDirection: ModelSortDirection
-  $filter: ModelComicEngagementFilterInput
+  $filter: ModelCDB02FilterInput
   $limit: Int
   $nextToken: String
 ) {
-  comicEngagementsByUserIdAndCreatedAt(
+  cDB02sByUserIdAndCreatedAt(
     userId: $userId
     createdAt: $createdAt
     sortDirection: $sortDirection
@@ -476,9 +479,11 @@ export const comicEngagementsByUserIdAndCreatedAt = /* GraphQL */ `query ComicEn
   ) {
     items {
       id
-      comicId
+      postId
       createdAt
+      content
       dataType
+      reply
       updatedAt
       userId
       __typename
@@ -488,6 +493,6 @@ export const comicEngagementsByUserIdAndCreatedAt = /* GraphQL */ `query ComicEn
   }
 }
 ` as GeneratedQuery<
-  APITypes.ComicEngagementsByUserIdAndCreatedAtQueryVariables,
-  APITypes.ComicEngagementsByUserIdAndCreatedAtQuery
+  APITypes.CDB02sByUserIdAndCreatedAtQueryVariables,
+  APITypes.CDB02sByUserIdAndCreatedAtQuery
 >;

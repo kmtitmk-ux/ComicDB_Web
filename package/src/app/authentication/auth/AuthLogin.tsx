@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "aws-amplify/auth";
@@ -12,7 +12,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import CustomTextField from "@/app/(DashboardLayout)/components/forms/theme-elements/CustomTextField";
-import UserAuth from "@/myComponents/UserAuth";
+import { UserAuth, ProcessSignIn } from "@/myComponents/UserAuth";
 
 interface loginType {
   title?: string;
@@ -20,9 +20,16 @@ interface loginType {
   subtext?: JSX.Element | JSX.Element[];
 }
 
-const AuthLogin = ({ title, subtitle, subtext }: loginType) => {
+const AuthLogin = async ({ title, subtitle, subtext }: loginType) => {
+  const [user, setUser] = useState<{ userId: string; username: string }>({
+    userId: "",
+    username: "",
+  });
   const router = useRouter();
-  const user = UserAuth();
+
+  useEffect(() => {
+    UserAuth(setUser);
+  }, []);
 
   if (user.userId) router.push("/");
 
@@ -36,17 +43,9 @@ const AuthLogin = ({ title, subtitle, subtext }: loginType) => {
 
       {subtext}
       <form
-        onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
-          e.preventDefault();
-          const form = e.target as HTMLFormElement;
-          const formData = new FormData(form);
-          const username = formData.get("username") as string;
-          const password = formData.get("password") as string;
-          const { nextStep: signInNextStep } = await signIn({
-            username,
-            password,
-          });
-          if (signInNextStep.signInStep === "DONE") router.push("/");
+        onSubmit={async (e) => {
+          const signInStep = await ProcessSignIn(e);
+          if (signInStep === "DONE") window.location.href = "/";
         }}
       >
         <Stack>

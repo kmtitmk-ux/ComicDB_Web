@@ -86,57 +86,63 @@ export const deleteComic = /* GraphQL */ `mutation DeleteComic(
   APITypes.DeleteComicMutationVariables,
   APITypes.DeleteComicMutation
 >;
-export const createComicEngagement = /* GraphQL */ `mutation CreateComicEngagement(
-  $input: CreateComicEngagementInput!
-  $condition: ModelComicEngagementConditionInput
+export const createCDB02 = /* GraphQL */ `mutation CreateCDB02(
+  $input: CreateCDB02Input!
+  $condition: ModelCDB02ConditionInput
 ) {
-  createComicEngagement(input: $input, condition: $condition) {
+  createCDB02(input: $input, condition: $condition) {
     id
-    comicId
+    postId
     createdAt
+    content
     dataType
+    reply
     updatedAt
     userId
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.CreateComicEngagementMutationVariables,
-  APITypes.CreateComicEngagementMutation
+  APITypes.CreateCDB02MutationVariables,
+  APITypes.CreateCDB02Mutation
 >;
-export const updateComicEngagement = /* GraphQL */ `mutation UpdateComicEngagement(
-  $input: UpdateComicEngagementInput!
-  $condition: ModelComicEngagementConditionInput
+export const updateCDB02 = /* GraphQL */ `mutation UpdateCDB02(
+  $input: UpdateCDB02Input!
+  $condition: ModelCDB02ConditionInput
 ) {
-  updateComicEngagement(input: $input, condition: $condition) {
+  updateCDB02(input: $input, condition: $condition) {
     id
-    comicId
+    postId
     createdAt
+    content
     dataType
+    reply
     updatedAt
     userId
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.UpdateComicEngagementMutationVariables,
-  APITypes.UpdateComicEngagementMutation
+  APITypes.UpdateCDB02MutationVariables,
+  APITypes.UpdateCDB02Mutation
 >;
-export const deleteComicEngagement = /* GraphQL */ `mutation DeleteComicEngagement(
-  $input: DeleteComicEngagementInput!
-  $condition: ModelComicEngagementConditionInput
+export const deleteCDB02 = /* GraphQL */ `mutation DeleteCDB02(
+  $input: DeleteCDB02Input!
+  $condition: ModelCDB02ConditionInput
 ) {
-  deleteComicEngagement(input: $input, condition: $condition) {
+  deleteCDB02(input: $input, condition: $condition) {
     id
-    comicId
+    postId
     createdAt
+    content
     dataType
+    reply
     updatedAt
     userId
     __typename
   }
 }
 ` as GeneratedMutation<
-  APITypes.DeleteComicEngagementMutationVariables,
-  APITypes.DeleteComicEngagementMutation
+  APITypes.DeleteCDB02MutationVariables,
+  APITypes.DeleteCDB02Mutation
 >;

@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 // components
 import Profile from "./Profile";
 import { IconBellRinging, IconMenu } from "@tabler/icons-react";
-import UserAuth from "@/myComponents/UserAuth";
+import { UserAuth } from "@/myComponents/UserAuth";
 
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
@@ -27,15 +27,14 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
   const [signInFlg, setSignIn] = useState(false);
-  const user = UserAuth();
+  const [user, setUser] = useState<{ userId: string; username: string; }>({
+    userId: "",
+    username: "",
+  });
 
   useEffect(() => {
-    if (user.userId) {
-      setSignIn(true);
-    } else {
-      setSignIn(false);
-    }
-  }, [user]);
+    UserAuth(setUser);
+  }, []);
 
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: "none",
@@ -82,20 +81,20 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         <Box flexGrow={1} />
 
         <Stack spacing={1} direction="row" alignItems="center">
-          {signInFlg && (
+          {user.userId && (
             <Button
               variant="contained"
               disableElevation
               color="primary"
               onClick={async () => {
                 await signOut();
-                setSignIn(false);
+                window.location.href = "/";
               }}
             >
               サインアウト
             </Button>
           )}
-          {!signInFlg && (
+          {!user.userId && (
             <Button
               variant="contained"
               component={Link}

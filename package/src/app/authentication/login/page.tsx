@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { signUp, signIn } from "aws-amplify/auth";
 import { Grid, Box, Card, Stack, Typography } from "@mui/material";
 // components
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
