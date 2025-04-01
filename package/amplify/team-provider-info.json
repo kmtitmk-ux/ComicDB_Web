@@ -53,7 +53,7 @@
           "bucketsName": "comicdb4ec1987bcc0e49149860186233ff425a715b3-main",
           "comicTable": "Comic-ljn56c4v4vfo3iogsvonsdzcv4-main",
           "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
-          "s3Key": "amplify-builds/ComicDbScraping-58686d594e5159376f37-build.zip"
+          "s3Key": "amplify-builds/ComicDbScraping-4d324f35746e2b41307a-build.zip"
         },
         "comicdbModules": {
           "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
