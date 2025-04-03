@@ -110,7 +110,6 @@ export const LikeButton = ({
                         },
                     }),
                 ]);
-                console.log(engagementRes);
                 setEngagementId(engagementRes.data.createCDB02.id);
                 setLike((prev) => prev + 1);
                 setAddLike((prev) => prev + 1);
