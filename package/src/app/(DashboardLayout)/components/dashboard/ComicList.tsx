@@ -5,7 +5,7 @@ import { Box, Chip, Grid, Stack, Typography, Avatar } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { IconArrowUpLeft } from "@tabler/icons-react";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
-import { LikeButton } from "@/myComponents/LikeButton";
+import { LikeButton } from "@/myComponents/EngagementContainer";
 
 import dayjs from "dayjs";
 import { Comic } from "@/API";

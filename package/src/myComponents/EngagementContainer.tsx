@@ -1,10 +1,9 @@
 "use client";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { Dispatch, FormEvent, SetStateAction } from "react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateClient } from "aws-amplify/api";
-import { Box, Chip, Grid, Stack, Typography, Avatar } from "@mui/material";
+import { Box, Button, Chip, Grid, Stack, Typography, TextField, Avatar } from "@mui/material";
 
 import * as queries from "@/graphql/queries";
 import * as mutations from "@/graphql/mutations";
@@ -124,7 +123,6 @@ export const LikeButton = ({
             setIsLiking(false);
         }
     };
-
     return (
         <>
             <Stack
@@ -140,6 +138,64 @@ export const LikeButton = ({
                     {like}
                 </Typography>
             </Stack>
+        </>
+    );
+};
+
+export const CommentList = ({ params, setCommentList }: { params: any; setCommentList: any; }) => {
+    const [comments, setComments] = useState([]);
+    console.log(comments);
+
+    const fetchCommentList = async () => {
+        const res = await client.graphql(params);
+        const test = await setCommentList(res);
+        setComments(test);
+    };
+
+    useEffect(() => {
+        fetchCommentList();
+    }, []);
+
+    return (
+        comments.map((v: any, i) => (
+            <Grid key={i} container spacing={2}>
+                <Grid item xl={12}>{v.content ?? ""}</Grid>
+            </Grid>
+        ))
+    );
+};
+
+export const CommentSection = ({ params }: { params: any; }) => {
+    const [comment, setComment] = useState('');
+    const handlePostComment = async () => {
+        params.variables.input.content = comment;
+        const res = await client.graphql(params);
+    };
+    return (
+        <>
+            <Grid container spacing={2}>
+                <Grid item xl={12}>
+                    <TextField
+                        label="コメントを書く"
+                        multiline
+                        rows={4}
+                        fullWidth
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item xl={12} container justifyContent="flex-end">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handlePostComment}
+                        disabled={!comment.trim()}
+                    >
+                        投稿
+                    </Button>
+                </Grid >
+            </Grid>
         </>
     );
 };
