@@ -112,11 +112,13 @@ export async function ProcessSignIn<T extends 'web' | 'native'>(e: ProcessSignIn
         username = (formData.get("username") as string) ?? '';
         password = (formData.get("password") as string) ?? '';
     }
-    console.log("signIn", { username, password, });
-    const { nextStep: signInNextStep } = await signIn({
-        username,
-        password,
-    });
-    console.log(signInNextStep.signInStep);
-    return signInNextStep.signInStep;
+    console.log("signIn", { username, password });
+    try {
+        const { nextStep: signInNextStep } = await signIn({ username, password });
+        console.log("nextStep", signInNextStep.signInStep);
+        return signInNextStep.signInStep;
+    } catch (e) {
+        console.log(e);
+    }
+
 }
