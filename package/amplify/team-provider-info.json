@@ -57,7 +57,7 @@
         },
         "comicdbModules": {
           "deploymentBucketName": "amplify-comicdb-main-715b3-deployment",
-          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersion9ba2f0af-build.zip"
+          "s3Key": "amplify-builds/comicdbModules-LambdaLayerVersion89e698a5-build.zip"
         }
       },
       "auth": {
