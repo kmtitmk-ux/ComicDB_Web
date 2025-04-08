@@ -271,7 +271,7 @@ async function getHtmlData(inUrl, procType, pageData) {
                 let queryResult = await dynamoDBClient.send(
                     new QueryCommand(queryParam)
                 );
-                console.info("Query RES", JSON.stringify(ueryResult.Items));
+                console.info("Query RES", JSON.stringify(queryResult.Items));
                 let editValue = await editOfficialTitleAndAuthor(title.trim());
                 if (queryResult.Count) {
                     outParam.push({
