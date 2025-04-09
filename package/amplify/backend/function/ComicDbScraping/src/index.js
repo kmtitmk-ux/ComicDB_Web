@@ -66,7 +66,7 @@ exports.handler = async (event) => {
             for (let v of scrapingData) {
                 if (!writeRequests[c]) writeRequests.push([]);
                 let item = {
-                    addLike: { N: 0 },
+                    addLike: { N: "0" },
                     author: { S: v.author },
                     createdAt: { S: dayjs(v.date).format() },
                     description: { S: v.description },
