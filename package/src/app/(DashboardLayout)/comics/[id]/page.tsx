@@ -4,11 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-import { generateClient } from "aws-amplify/api";
+import { generateClient, GraphQLResult } from "aws-amplify/api";
 import * as mutations from "@/graphql/mutations";
 import * as queries from "@/graphql/queries";
-import { getComic, cDB02sByPostIdAndUpdatedAt } from "@/graphql/queries";
-import { GetComicQueryVariables, Comic } from "@/API";
+import { getComic } from "@/graphql/queries";
+import { CDB02, CDB02sByPostIdAndUpdatedAtQuery, CreateCDB02Mutation, Comic } from "@/API";
 
 import { Grid, Typography, Box } from "@mui/material";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
@@ -25,6 +25,7 @@ import IosShareIcon from '@mui/icons-material/IosShare';
 
 const ComicPage = () => {
     const [comic, setComic] = useState<Comic>();
+    const [comments, setComments] = useState<CDB02[]>([]);
     const [user, setUser] = useState<{ userId: string; username: string; }>({ userId: "", username: "" });
     const pathname = usePathname();
     const id = pathname.replace("/comics/", "");
@@ -40,7 +41,35 @@ const ComicPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    // データ取得
+    const setCommentList = async (
+        res: GraphQLResult<CDB02sByPostIdAndUpdatedAtQuery> | GraphQLResult<CreateCDB02Mutation>,
+        type: string
+    ) => {
+        console.log(res, type);
+        let nextToken: string = "";
+        switch (type) {
+            case "list":
+                const listCommentData = (res.data as CDB02sByPostIdAndUpdatedAtQuery).cDB02sByPostIdAndUpdatedAt;
+                if (!listCommentData) {
+                    console.warn("コメントデータが取得できませんでした");
+                    return;
+                }
+                setComments((pre) => [...pre, ...listCommentData.items.filter(item => item !== null)]);
+                nextToken = listCommentData.nextToken ?? "";
+                break;
+            case "create":
+                const createCommentData = (res.data as CreateCDB02Mutation).createCDB02;
+                if (!createCommentData) {
+                    console.warn("コメントデータが取得できませんでした");
+                    return;
+                }
+                setComments((pre) => [...[createCommentData], ...pre]);
+                break;
+            default:
+        }
+        return nextToken;
+    };
+
     const fetchData = async () => {
         try {
             const result: any = await client.graphql({
@@ -54,10 +83,6 @@ const ComicPage = () => {
         }
     };
 
-    // データ取得
-    const setCommentList = async (res: any) => {
-        return res?.data?.cDB02sByPostIdAndUpdatedAt.items ?? [];
-    };
     if (!comic) return;
     return (
         <>
@@ -69,7 +94,7 @@ const ComicPage = () => {
                     <Grid item xl={6}>
                         <DashboardCard title={comic?.title ?? ""} url={comic?.url ?? "#"}>
                             <Grid container spacing={3}>
-                                <Grid item xl={12}>
+                                <Grid item xs={12}>
                                     {comic?.img && (
                                         <Box
                                             style={{
@@ -94,10 +119,10 @@ const ComicPage = () => {
                                         </Box>
                                     )}
                                 </Grid>
-                                <Grid item xl={12}>
+                                <Grid item xs={12}>
                                     <Typography>{comic?.description ?? ""}</Typography>
                                 </Grid>
-                                <Grid item xl={12} container justifyContent="space-between" alignItems="center">
+                                <Grid item xs={12} container justifyContent="space-between" alignItems="center">
                                     <ChatBubbleOutlineIcon />
                                     {/* <AutorenewIcon /> */}
                                     <LikeButton
@@ -110,42 +135,50 @@ const ComicPage = () => {
                                     {/* <IosShareIcon />
                                     <BookmarkBorderIcon /> */}
                                 </Grid>
-                                <Grid item xl={12}>
-                                    <CommentSection params={{
-                                        query: mutations.createCDB02,
-                                        variables: {
-                                            input: {
-                                                userId: user?.userId,
-                                                postId: id,
-                                                dataType: "comment",
-                                                content: "",
-                                                reply: "",
+                                <Grid item xs={12} sx={{ pb: 3, borderBottom: "1px solid #DDD" }}>
+                                    <CommentSection
+                                        userId={user.userId}
+                                        params={{
+                                            query: mutations.createCDB02,
+                                            variables: {
+                                                input: {
+                                                    userId: user?.userId,
+                                                    postId: id,
+                                                    dataType: "comment",
+                                                    content: "",
+                                                    reply: "",
+                                                },
                                             },
-                                        },
-                                    }} />
+                                        }}
+                                        setCommentList={setCommentList}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} >
                                     <CommentList
                                         params={{
                                             query: queries.cDB02sByPostIdAndUpdatedAt,
                                             variables: {
                                                 postId: id,
+                                                sortDirection: "DESC",
                                                 filter: {
                                                     dataType: { eq: "comment" }
-                                                }
-                                            },
+                                                },
+                                            }
                                         }}
+                                        comments={comments}
                                         setCommentList={setCommentList}
                                     />
                                 </Grid>
                             </Grid>
                         </DashboardCard>
                     </Grid>
-                    {/* 関連リスト作成予定 */}
-                    {/* <Grid item xl={6}>
-            <DashboardCard title={comic?.title ?? ""}>
-              <Typography>{comic?.description ?? ""}</Typography>
-            </DashboardCard>
-          </Grid> */}
-                </Grid>
+                </Grid >
+                {/* 関連リスト作成予定 */}
+                {/* <Grid item xl={6}>
+                    <DashboardCard title={comic?.title ?? ""}>
+                        <Typography>{comic?.description ?? ""}</Typography>
+                    </DashboardCard>
+                </Grid> */}
             </PageContainer >
         </>
     );

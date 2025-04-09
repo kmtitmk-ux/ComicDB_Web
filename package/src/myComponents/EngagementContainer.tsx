@@ -8,7 +8,6 @@ import { Box, Button, Chip, Grid, Stack, Typography, TextField, Avatar } from "@
 import * as queries from "@/graphql/queries";
 import * as mutations from "@/graphql/mutations";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-// import type * as API from "@/API";
 
 const client = generateClient();
 
@@ -142,14 +141,21 @@ export const LikeButton = ({
     );
 };
 
-export const CommentList = ({ params, setCommentList }: { params: any; setCommentList: any; }) => {
-    const [comments, setComments] = useState([]);
-    console.log(comments);
-
+export const CommentList = ({
+    params,
+    comments,
+    setCommentList
+}: {
+    params: any;
+    comments: any;
+    setCommentList: any;
+}) => {
     const fetchCommentList = async () => {
-        const res = await client.graphql(params);
-        const test = await setCommentList(res);
-        setComments(test);
+        let nextToken = "";
+        do {
+            const res = await client.graphql(params);
+            nextToken = await setCommentList(res, "list");
+        } while (nextToken);
     };
 
     useEffect(() => {
@@ -157,24 +163,43 @@ export const CommentList = ({ params, setCommentList }: { params: any; setCommen
     }, []);
 
     return (
-        comments.map((v: any, i) => (
-            <Grid key={i} container spacing={2}>
-                <Grid item xl={12}>{v.content ?? ""}</Grid>
-            </Grid>
-        ))
+        <Grid container spacing={3}>
+            {comments.map((v: any, i: number) => (
+                <Grid item key={i} xs={12}>
+                    <Typography>{v.content}</Typography>
+                </Grid>
+            ))}
+        </Grid>
     );
 };
 
-export const CommentSection = ({ params }: { params: any; }) => {
-    const [comment, setComment] = useState('');
+export const CommentSection = ({
+    userId,
+    params,
+    setCommentList
+}: {
+    userId: string;
+    params: any;
+    setCommentList: any;
+}
+) => {
+    const [comment, setComment] = useState("");
+    const router = useRouter();
+
     const handlePostComment = async () => {
-        params.variables.input.content = comment;
-        const res = await client.graphql(params);
+        if (userId) {
+            params.variables.input.content = comment;
+            const res = await client.graphql(params);
+            setCommentList(res, "create");
+            setComment("");
+        } else {
+            router.push("/authentication/register");
+        }
     };
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xl={12}>
+                <Grid item xs={12}>
                     <TextField
                         label="コメントを書く"
                         multiline
@@ -185,7 +210,7 @@ export const CommentSection = ({ params }: { params: any; }) => {
                         variant="outlined"
                     />
                 </Grid>
-                <Grid item xl={12} container justifyContent="flex-end">
+                <Grid item xs={12} container justifyContent="flex-end">
                     <Button
                         variant="contained"
                         color="primary"
