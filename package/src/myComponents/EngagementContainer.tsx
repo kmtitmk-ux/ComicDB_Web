@@ -1,15 +1,13 @@
 "use client";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { Dispatch, FormEvent, SetStateAction } from "react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { generateClient } from "aws-amplify/api";
-import { Box, Chip, Grid, Stack, Typography, Avatar } from "@mui/material";
+import { Box, Button, Chip, Grid, Stack, Typography, TextField, Avatar } from "@mui/material";
 
 import * as queries from "@/graphql/queries";
 import * as mutations from "@/graphql/mutations";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-// import type * as API from "@/API";
 
 const client = generateClient();
 
@@ -124,7 +122,6 @@ export const LikeButton = ({
             setIsLiking(false);
         }
     };
-
     return (
         <>
             <Stack
@@ -140,6 +137,90 @@ export const LikeButton = ({
                     {like}
                 </Typography>
             </Stack>
+        </>
+    );
+};
+
+export const CommentList = ({
+    params,
+    comments,
+    setCommentList
+}: {
+    params: any;
+    comments: any;
+    setCommentList: any;
+}) => {
+    const fetchCommentList = async () => {
+        let nextToken = "";
+        do {
+            const res = await client.graphql(params);
+            nextToken = await setCommentList(res, "list");
+        } while (nextToken);
+    };
+
+    useEffect(() => {
+        fetchCommentList();
+    }, []);
+
+    return (
+        <Grid container spacing={3}>
+            {comments.map((v: any, i: number) => (
+                <Grid item key={i} xs={12}>
+                    <Typography>{v.content}</Typography>
+                </Grid>
+            ))}
+        </Grid>
+    );
+};
+
+export const CommentSection = ({
+    userId,
+    params,
+    setCommentList
+}: {
+    userId: string;
+    params: any;
+    setCommentList: any;
+}
+) => {
+    const [comment, setComment] = useState("");
+    const router = useRouter();
+
+    const handlePostComment = async () => {
+        if (userId) {
+            params.variables.input.content = comment;
+            const res = await client.graphql(params);
+            setCommentList(res, "create");
+            setComment("");
+        } else {
+            router.push("/authentication/register");
+        }
+    };
+    return (
+        <>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        label="コメントを書く"
+                        multiline
+                        rows={4}
+                        fullWidth
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item xs={12} container justifyContent="flex-end">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handlePostComment}
+                        disabled={!comment.trim()}
+                    >
+                        投稿
+                    </Button>
+                </Grid >
+            </Grid>
         </>
     );
 };

@@ -860,6 +860,33 @@ export type CDB02sByPostIdAndUserIdQuery = {
   } | null,
 };
 
+export type CDB02sByPostIdAndUpdatedAtQueryVariables = {
+  postId: string,
+  updatedAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelCDB02FilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type CDB02sByPostIdAndUpdatedAtQuery = {
+  cDB02sByPostIdAndUpdatedAt?:  {
+    __typename: "ModelCDB02Connection",
+    items:  Array< {
+      __typename: "CDB02",
+      id: string,
+      postId?: string | null,
+      createdAt?: string | null,
+      content?: string | null,
+      dataType?: string | null,
+      reply?: string | null,
+      updatedAt?: string | null,
+      userId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type CDB02sByUserIdAndCreatedAtQueryVariables = {
   userId: string,
   createdAt?: ModelStringKeyConditionInput | null,
