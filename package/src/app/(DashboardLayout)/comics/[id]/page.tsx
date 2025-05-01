@@ -3,21 +3,17 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-
 import { generateClient, GraphQLResult } from "aws-amplify/api";
 import * as mutations from "@/graphql/mutations";
 import * as queries from "@/graphql/queries";
 import { getComic } from "@/graphql/queries";
 import { CDB02, CDB02sByPostIdAndUpdatedAtQuery, CreateCDB02Mutation, Comic } from "@/API";
-
 import { Grid, Typography, Box } from "@mui/material";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
 import config from "@/aws-exports.js";
 import { UserAuth } from "@/myComponents/UserAuth";
 import { CommentSection, CommentList, LikeButton } from "@/myComponents/EngagementContainer";
-
-
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -86,11 +82,14 @@ const ComicPage = () => {
     };
 
     if (!comic) return;
+
     return (
         <>
             <PageContainer
+                comic={comic}
                 title={`${comic?.title ? comic.title : ""}`}
                 description={comic?.description ?? ""}
+                url={pathname}
             >
                 <Grid container>
                     <Grid item xl={6}>
@@ -185,6 +184,5 @@ const ComicPage = () => {
         </>
     );
 };
-6;
 
 export default ComicPage;
