@@ -45,7 +45,6 @@ const ComicPage = () => {
         res: GraphQLResult<CDB02sByPostIdAndUpdatedAtQuery> | GraphQLResult<CreateCDB02Mutation>,
         type: string
     ) => {
-        console.log(res, type);
         let nextToken: string = "";
         switch (type) {
             case "list":
@@ -54,7 +53,10 @@ const ComicPage = () => {
                     console.warn("コメントデータが取得できませんでした");
                     return;
                 }
-                setComments((pre) => [...pre, ...listCommentData.items.filter(item => item !== null)]);
+                setComments((pre) => [
+                    ...pre,
+                    ...listCommentData.items.filter((item): item is CDB02 => item !== null)
+                ]);
                 nextToken = listCommentData.nextToken ?? "";
                 break;
             case "create":
