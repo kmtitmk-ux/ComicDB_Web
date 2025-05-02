@@ -4,16 +4,15 @@ import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCa
 
 
 const Icons = () => {
-  return (
-    <PageContainer title="Icons" description="this is Icons">
-
-      <DashboardCard title="Icons">
-      <iframe src="https://tabler-icons.io/"  title="Inline Frame Example" frameBorder={0}
-    width="100%"
-    height="650"></iframe>
-      </DashboardCard>
-    </PageContainer>
-  );
+    return (
+        <PageContainer title="Icons" description="this is Icons">
+            <DashboardCard title="Icons">
+                <iframe src="https://tabler-icons.io/" title="Inline Frame Example" frameBorder={0}
+                    width="100%"
+                    height="650"></iframe>
+            </DashboardCard>
+        </PageContainer>
+    );
 };
 
 export default Icons;
