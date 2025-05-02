@@ -21,6 +21,10 @@ const PageContainer = ({ comic, title, description, children }: Props) => {
                     <meta property="og:title" content={setTitle} />
                     <meta property="og:description" content={description} />
                     <meta property="og:image" content={setImg} />
+                    <meta name="twitter:card" content="summary_large_image" />
+                    <meta name="twitter:title" content={setTitle} />
+                    <meta name="twitter:description" content={description} />
+                    <meta name="twitter:image" content={setImg} />
                 </Helmet>
                 {children}
             </div>
