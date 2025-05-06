@@ -461,17 +461,17 @@ export const cDB02sByPostIdAndUserId = /* GraphQL */ `query CDB02sByPostIdAndUse
   APITypes.CDB02sByPostIdAndUserIdQueryVariables,
   APITypes.CDB02sByPostIdAndUserIdQuery
 >;
-export const cDB02sByPostIdAndUpdatedAt = /* GraphQL */ `query CDB02sByPostIdAndUpdatedAt(
+export const cDB02sByPostIdAndCreatedAt = /* GraphQL */ `query CDB02sByPostIdAndCreatedAt(
   $postId: String!
-  $updatedAt: ModelStringKeyConditionInput
+  $createdAt: ModelStringKeyConditionInput
   $sortDirection: ModelSortDirection
   $filter: ModelCDB02FilterInput
   $limit: Int
   $nextToken: String
 ) {
-  cDB02sByPostIdAndUpdatedAt(
+  cDB02sByPostIdAndCreatedAt(
     postId: $postId
-    updatedAt: $updatedAt
+    createdAt: $createdAt
     sortDirection: $sortDirection
     filter: $filter
     limit: $limit
@@ -493,8 +493,8 @@ export const cDB02sByPostIdAndUpdatedAt = /* GraphQL */ `query CDB02sByPostIdAnd
   }
 }
 ` as GeneratedQuery<
-  APITypes.CDB02sByPostIdAndUpdatedAtQueryVariables,
-  APITypes.CDB02sByPostIdAndUpdatedAtQuery
+  APITypes.CDB02sByPostIdAndCreatedAtQueryVariables,
+  APITypes.CDB02sByPostIdAndCreatedAtQuery
 >;
 export const cDB02sByUserIdAndCreatedAt = /* GraphQL */ `query CDB02sByUserIdAndCreatedAt(
   $userId: String!

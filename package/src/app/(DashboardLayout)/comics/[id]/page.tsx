@@ -3,21 +3,27 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+
 import { generateClient, GraphQLResult } from "aws-amplify/api";
 import * as mutations from "@/graphql/mutations";
 import * as queries from "@/graphql/queries";
 import { getComic } from "@/graphql/queries";
-import { CDB02, CDB02sByPostIdAndUpdatedAtQuery, CreateCDB02Mutation, Comic } from "@/API";
-import { Grid, Typography, Box } from "@mui/material";
-import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
-import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+import { CDB02, CDB02sByPostIdAndCreatedAtQuery, CreateCDB02Mutation, Comic, CDB02sByPostIdAndCreatedAtQueryVariables, ModelSortDirection } from "@/API";
+
 import config from "@/aws-exports.js";
-import { UserAuth } from "@/myComponents/UserAuth";
-import { CommentSection, CommentList, LikeButton } from "@/myComponents/EngagementContainer";
+
+import { Grid, Typography, Box } from "@mui/material";
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import IosShareIcon from '@mui/icons-material/IosShare';
+
+import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
+import DashboardCard from "@/app/(DashboardLayout)/components/shared/DashboardCard";
+
+import { UserAuth } from "@/myComponents/UserAuth";
+import { CommentSection, LikeButton } from "@/myComponents/EngagementContainer";
+import dayjs from 'dayjs';
 
 const ComicPage = () => {
     const [comic, setComic] = useState<Comic>();
@@ -34,24 +40,50 @@ const ComicPage = () => {
 
     useEffect(() => {
         fetchData();
+        fetchCommentList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
+    const fetchCommentList = async () => {
+        const params: {
+            query: typeof queries.cDB02sByPostIdAndCreatedAt;
+            variables: CDB02sByPostIdAndCreatedAtQueryVariables;
+        } = {
+            query: queries.cDB02sByPostIdAndCreatedAt,
+            variables: {
+                postId: id,
+                sortDirection: ModelSortDirection.DESC,
+                filter: {
+                    dataType: { eq: "comment" }
+                },
+            }
+        };
+        do {
+            const res = await client.graphql(params);
+            params.variables.nextToken = await setCommentList(res, "list");
+        } while (params.variables.nextToken);
+    };
+
     const setCommentList = async (
-        res: GraphQLResult<CDB02sByPostIdAndUpdatedAtQuery> | GraphQLResult<CreateCDB02Mutation>,
+        res: GraphQLResult<CDB02sByPostIdAndCreatedAtQuery> | GraphQLResult<CreateCDB02Mutation>,
         type: string
     ) => {
         let nextToken: string = "";
         switch (type) {
             case "list":
-                const listCommentData = (res.data as CDB02sByPostIdAndUpdatedAtQuery).cDB02sByPostIdAndUpdatedAt;
+                const listCommentData = (res.data as CDB02sByPostIdAndCreatedAtQuery).cDB02sByPostIdAndCreatedAt;
                 if (!listCommentData) {
                     console.warn("コメントデータが取得できませんでした");
                     return;
                 }
                 setComments((pre) => [
                     ...pre,
-                    ...listCommentData.items.filter((item): item is CDB02 => item !== null)
+                    ...listCommentData.items.filter((item): item is CDB02 => {
+                        // if (item) {
+                        //     item.createdAt = dayjs(item.createdAt).format("YYYY/MM/DD");
+                        // }
+                        return item !== null;
+                    })
                 ]);
                 nextToken = listCommentData.nextToken ?? "";
                 break;
@@ -155,20 +187,16 @@ const ComicPage = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} >
-                                    <CommentList
-                                        params={{
-                                            query: queries.cDB02sByPostIdAndUpdatedAt,
-                                            variables: {
-                                                postId: id,
-                                                sortDirection: "DESC",
-                                                filter: {
-                                                    dataType: { eq: "comment" }
-                                                },
-                                            }
-                                        }}
-                                        comments={comments}
-                                        setCommentList={setCommentList}
-                                    />
+                                    <Grid container spacing={3}>
+                                        {comments.map((v: any, i: number) => (
+                                            <Grid item key={i} xs={12}>
+                                                <Typography variant="body2" color="textSecondary" gutterBottom>
+                                                    {dayjs(v.createdAt).format("YYYY/MM/DD")}
+                                                </Typography>
+                                                <Typography>{v.content}</Typography>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </DashboardCard>

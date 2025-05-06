@@ -34,7 +34,7 @@ type CDB02 @model {
   id: ID!
   postId: String
     @index(name: "byOrderByPostIdByUserId", sortKeyFields: ["userId"])
-    @index(name: "byOrderByPostIdByUpdatedAt", sortKeyFields: ["updatedAt"])
+    @index(name: "byOrderByPostIdByCreatedAt", sortKeyFields: ["createdAt"])
   createdAt: AWSDateTime
   content: String
   dataType: String

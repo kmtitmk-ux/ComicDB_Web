@@ -122,6 +122,7 @@ export const LikeButton = ({
             setIsLiking(false);
         }
     };
+
     return (
         <>
             <Stack
@@ -138,38 +139,6 @@ export const LikeButton = ({
                 </Typography>
             </Stack>
         </>
-    );
-};
-
-export const CommentList = ({
-    params,
-    comments,
-    setCommentList
-}: {
-    params: any;
-    comments: any;
-    setCommentList: any;
-}) => {
-    const fetchCommentList = async () => {
-        let nextToken = "";
-        do {
-            const res = await client.graphql(params);
-            nextToken = await setCommentList(res, "list");
-        } while (nextToken);
-    };
-
-    useEffect(() => {
-        fetchCommentList();
-    }, []);
-
-    return (
-        <Grid container spacing={3}>
-            {comments.map((v: any, i: number) => (
-                <Grid item key={i} xs={12}>
-                    <Typography>{v.content}</Typography>
-                </Grid>
-            ))}
-        </Grid>
     );
 };
 
@@ -196,6 +165,7 @@ export const CommentSection = ({
             router.push("/authentication/register");
         }
     };
+
     return (
         <>
             <Grid container spacing={2}>

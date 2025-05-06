@@ -860,17 +860,17 @@ export type CDB02sByPostIdAndUserIdQuery = {
   } | null,
 };
 
-export type CDB02sByPostIdAndUpdatedAtQueryVariables = {
+export type CDB02sByPostIdAndCreatedAtQueryVariables = {
   postId: string,
-  updatedAt?: ModelStringKeyConditionInput | null,
+  createdAt?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelCDB02FilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type CDB02sByPostIdAndUpdatedAtQuery = {
-  cDB02sByPostIdAndUpdatedAt?:  {
+export type CDB02sByPostIdAndCreatedAtQuery = {
+  cDB02sByPostIdAndCreatedAt?:  {
     __typename: "ModelCDB02Connection",
     items:  Array< {
       __typename: "CDB02",
