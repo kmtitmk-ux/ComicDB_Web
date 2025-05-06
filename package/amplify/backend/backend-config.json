@@ -46,9 +46,51 @@
     }
   },
   "function": {
+    "CDB02": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "comicdb"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "comicdb"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "comicdbModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "ComicDbScraping": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "comicdb"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "comicdb"
+        },
         {
           "attributes": [
             "Arn"
@@ -67,19 +109,19 @@
     }
   },
   "parameters": {
-    "AMPLIFY_function_ComicDbScraping_bucketsName": {
+    "AMPLIFY_function_CDB02_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "ComicDbScraping"
+          "resourceName": "CDB02"
         }
       ]
     },
-    "AMPLIFY_function_ComicDbScraping_comicTable": {
+    "AMPLIFY_function_CDB02_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "ComicDbScraping"
+          "resourceName": "CDB02"
         }
       ]
     },

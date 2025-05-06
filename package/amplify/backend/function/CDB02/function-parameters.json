@@ -3,9 +3,9 @@
     {
       "type": "ProjectLayer",
       "resourceName": "comicdbModules",
+      "env": "dev",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true,
-      "env": "dev"
+      "isLatestVersionSelected": true
     }
   ],
   "environmentVariableList": [],
@@ -13,14 +13,11 @@
     "storage": {
       "comicdb": [
         "create",
-        "read"
-      ],
-      "Comic:@model(appsync)": [
-        "create",
-        "read"
+        "read",
+        "delete"
       ],
       "CDB02:@model(appsync)": [
-        "read"
+        "create"
       ]
     }
   }
