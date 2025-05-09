@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.12.6\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.14.4\",\"stackType\":\"function-Lambda\",\"metadata\":{\"whyContinueWithGen1\":\"\"}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -20,13 +20,13 @@
       "Type": "String",
       "Default": "functioncomicdbModulesArn"
     },
-    "apicomicdbGraphQLAPIIdOutput": {
-      "Type": "String",
-      "Default": "apicomicdbGraphQLAPIIdOutput"
-    },
     "storagecomicdbBucketName": {
       "Type": "String",
       "Default": "storagecomicdbBucketName"
+    },
+    "apicomicdbGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apicomicdbGraphQLAPIIdOutput"
     }
   },
   "Conditions": {
@@ -59,12 +59,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "ComicDbScraping",
+            "CDB02",
             {
               "Fn::Join": [
                 "",
                 [
-                  "ComicDbScraping",
+                  "CDB02",
                   "-",
                   {
                     "Ref": "env"
@@ -82,34 +82,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_COMICDB_COMICTABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apicomicdbGraphQLAPIIdOutput}:GetAtt:ComicTable:Name"
-              }
-            },
-            "API_COMICDB_COMICTABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apicomicdbGraphQLAPIIdOutput}:GetAtt:ComicTable:Name"
-                    }
-                  }
-                ]
-              ]
-            },
-            "API_COMICDB_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apicomicdbGraphQLAPIIdOutput"
+            "STORAGE_COMICDB_BUCKETNAME": {
+              "Ref": "storagecomicdbBucketName"
             },
             "API_COMICDB_CDB02TABLE_NAME": {
               "Fn::ImportValue": {
@@ -137,8 +111,8 @@
                 ]
               ]
             },
-            "STORAGE_COMICDB_BUCKETNAME": {
-              "Ref": "storagecomicdbBucketName"
+            "API_COMICDB_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apicomicdbGraphQLAPIIdOutput"
             }
           }
         },
@@ -163,12 +137,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "comicdbLambdaRole77b7f6af",
+            "comicdbLambdaRoleb989bcd7",
             {
               "Fn::Join": [
                 "",
                 [
-                  "comicdbLambdaRole77b7f6af",
+                  "comicdbLambdaRoleb989bcd7",
                   "-",
                   {
                     "Ref": "env"
@@ -239,45 +213,6 @@
         }
       }
     },
-    "CloudWatchEvent": {
-      "Type": "AWS::Events::Rule",
-      "Properties": {
-        "Description": "Schedule rule for Lambda",
-        "ScheduleExpression": {
-          "Ref": "CloudWatchRule"
-        },
-        "State": "ENABLED",
-        "Targets": [
-          {
-            "Arn": {
-              "Fn::GetAtt": [
-                "LambdaFunction",
-                "Arn"
-              ]
-            },
-            "Id": {
-              "Ref": "LambdaFunction"
-            }
-          }
-        ]
-      }
-    },
-    "PermissionForEventsToInvokeLambda": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "LambdaFunction"
-        },
-        "Action": "lambda:InvokeFunction",
-        "Principal": "events.amazonaws.com",
-        "SourceArn": {
-          "Fn::GetAtt": [
-            "CloudWatchEvent",
-            "Arn"
-          ]
-        }
-      }
-    },
     "AmplifyResourcesPolicy": {
       "DependsOn": [
         "LambdaExecutionRole"
@@ -314,7 +249,8 @@
               "Effect": "Allow",
               "Action": [
                 "s3:PutObject",
-                "s3:GetObject"
+                "s3:GetObject",
+                "s3:DeleteObject"
               ],
               "Resource": [
                 {
@@ -337,71 +273,7 @@
                 "dynamodb:Put*",
                 "dynamodb:Create*",
                 "dynamodb:BatchWriteItem",
-                "dynamodb:PartiQLInsert",
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:PartiQLSelect"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicomicdbGraphQLAPIIdOutput}:GetAtt:ComicTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicomicdbGraphQLAPIIdOutput}:GetAtt:ComicTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:PartiQLSelect"
+                "dynamodb:PartiQLInsert"
               ],
               "Resource": [
                 {
@@ -484,11 +356,6 @@
           "LambdaExecutionRole",
           "Arn"
         ]
-      }
-    },
-    "CloudWatchEventRule": {
-      "Value": {
-        "Ref": "CloudWatchEvent"
       }
     }
   }

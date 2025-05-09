@@ -46,9 +46,51 @@
     }
   },
   "function": {
+    "CDB02": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "comicdb"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "comicdb"
+        },
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "comicdbModules"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "ComicDbScraping": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "comicdb"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "comicdb"
+        },
         {
           "attributes": [
             "Arn"
@@ -64,56 +106,6 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_ComicDbScraping_bucketsName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "ComicDbScraping"
-        }
-      ]
-    },
-    "AMPLIFY_function_ComicDbScraping_comicTable": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "ComicDbScraping"
-        }
-      ]
-    },
-    "AMPLIFY_function_ComicDbScraping_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "ComicDbScraping"
-        }
-      ]
-    },
-    "AMPLIFY_function_ComicDbScraping_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "ComicDbScraping"
-        }
-      ]
-    },
-    "AMPLIFY_function_comicdbModules_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "comicdbModules"
-        }
-      ]
-    },
-    "AMPLIFY_function_comicdbModules_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "comicdbModules"
-        }
-      ]
     }
   },
   "storage": {

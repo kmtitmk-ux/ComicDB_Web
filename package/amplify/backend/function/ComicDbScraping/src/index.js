@@ -1,19 +1,17 @@
 /* Amplify Params - DO NOT EDIT
-ENV
-REGION
+    API_COMICDB_CDB02TABLE_ARN
+    API_COMICDB_CDB02TABLE_NAME
+    API_COMICDB_COMICTABLE_ARN
+    API_COMICDB_COMICTABLE_NAME
+    API_COMICDB_GRAPHQLAPIIDOUTPUT
+    ENV
+    REGION
+    STORAGE_COMICDB_BUCKETNAME
 Amplify Params - DO NOT EDIT */
 
-const {
-    S3Client,
-    PutObjectCommand,
-    GetObjectCommand,
-} = require("@aws-sdk/client-s3");
+const { S3Client, PutObjectCommand, GetObjectCommand, ListObjectsV2Command, NoSuchKey, S3ServiceException } = require("@aws-sdk/client-s3");
 const s3 = new S3Client({});
-const {
-    DynamoDBClient,
-    QueryCommand,
-    BatchWriteItemCommand,
-} = require("@aws-sdk/client-dynamodb");
+const { DynamoDBClient, QueryCommand, BatchWriteItemCommand } = require("@aws-sdk/client-dynamodb");
 const dynamoDBClient = new DynamoDBClient({});
 const axios = require("axios");
 const cheerio = require("cheerio");
@@ -22,12 +20,15 @@ const path = require("path");
 const url = require("url");
 const { v4: uuidv4 } = require("uuid");
 
+const API_COMICDB_COMICTABLE_NAME = process.env.API_COMICDB_COMICTABLE_NAME;
+const STORAGE_COMICDB_BUCKETNAME = process.env.STORAGE_COMICDB_BUCKETNAME;
+const API_COMICDB_CDB02TABLE_NAME = process.env.API_COMICDB_CDB02TABLE_NAME;
+
 /**
  * @type {import("@types/aws-lambda").APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-    let writeRequests = [],
-        queryResult = {};
+    let writeRequests = [], queryResult = {};
     console.info(`EVENT: ${JSON.stringify(event)}`);
     switch (event.procType) {
         case "addNewData":
@@ -38,7 +39,7 @@ exports.handler = async (event) => {
                 try {
                     let getObjectCommandRes = await s3.send(
                         new GetObjectCommand({
-                            Bucket: process.env.BucketsName,
+                            Bucket: STORAGE_COMICDB_BUCKETNAME,
                             Key: "pageCount.json",
                         })
                     );
@@ -56,7 +57,7 @@ exports.handler = async (event) => {
                 console.info("pageCount:", pageCount);
                 await s3.send(
                     new PutObjectCommand({
-                        Bucket: process.env.BucketsName,
+                        Bucket: STORAGE_COMICDB_BUCKETNAME,
                         Key: "pageCount.json",
                         Body: JSON.stringify({ pageCount: pageCount }),
                     })
@@ -96,16 +97,17 @@ exports.handler = async (event) => {
         case "checkData": {
             // クエリの実行
             const queryParam = {
-                TableName: process.env.ComicTable,
+                TableName: API_COMICDB_COMICTABLE_NAME,
                 IndexName: "byOrderByStatusByUpdatedAt",
                 KeyConditionExpression: "#status = :status",
                 ExpressionAttributeNames: { "#status": "status" },
                 ExpressionAttributeValues: { ":status": { N: "0" } },
-                Limit: 160,
+                Limit: 30,
             };
             console.info("Query REQ", queryParam);
             queryResult = await dynamoDBClient.send(new QueryCommand(queryParam));
             console.info("Query RES", JSON.stringify(queryResult.Items));
+            const commentData = [];
             let c = 0;
             for (const v of queryResult.Items) {
                 console.info("search url", v.url.S);
@@ -126,6 +128,7 @@ exports.handler = async (event) => {
                 if (!errFlg) continue;
 
                 // いいね、タグ更新
+                // 記号を分割 | \
                 const searchTitle = `https://b.hatena.ne.jp/q/${v.title.S}?target=title`;
                 console.info("search title", encodeURI(searchTitle));
                 errFlg = await axios
@@ -140,6 +143,7 @@ exports.handler = async (event) => {
                             console.info("URLが一致しません", url, v.url.S);
                             return true;
                         }
+                        // タグ取得
                         const tags = [];
                         let like = $(element).find('[data-gtm-click-label="entry-search-result-item-users"]')
                             .text()
@@ -152,6 +156,7 @@ exports.handler = async (event) => {
                         }
                         v.tags = { S: JSON.stringify(tags) };
                         if (!v.addLike?.N) v.addLike = { N: "0" };
+                        // いいね取得
                         like = Number(like || 0) + Number(v.addLike.N);
                         v.like = { N: String(like) };
                         v.errCount = { N: "0" };
@@ -159,6 +164,23 @@ exports.handler = async (event) => {
                             const editValue = await editOfficialTitleAndAuthor(v.title.S);
                             if (editValue.officialTitle) v.officialTitle = { S: editValue.officialTitle };
                             if (editValue.auhtor) v.author = { S: editValue.auhtor };
+                        }
+                        // クエリの実行
+                        const queryParam = {
+                            TableName: API_COMICDB_CDB02TABLE_NAME,
+                            IndexName: "byOrderByPostIdByUpdatedAt",
+                            KeyConditionExpression: "#postId = :postId",
+                            ExpressionAttributeNames: { "#postId": "postId" },
+                            ExpressionAttributeValues: { ":postId": { S: v.id.S } },
+                            Limit: 1,
+                        };
+                        console.info("Query REQ", queryParam);
+                        const queryResult = await dynamoDBClient.send(new QueryCommand(queryParam));
+                        console.info("Query RES", JSON.stringify(queryResult.Items));
+                        if (!queryResult.Count) {
+                            // コメント取得
+                            let commentUrl = $(element).find('a.js-keyboard-entry-page-openable').attr("href");
+                            await getCommentData(`https://b.hatena.ne.jp${commentUrl}`, v.id.S, commentData);
                         }
                         return true;
                     })
@@ -171,13 +193,38 @@ exports.handler = async (event) => {
                         return false;
                     });
                 if (!errFlg) continue;
-
                 // 更新
                 v.updatedAt = { S: dayjs().format() };
                 if (!writeRequests[c]) writeRequests.push([]);
                 writeRequests[c].push({ PutRequest: { Item: v } });
                 if (writeRequests[c].length !== 0 && writeRequests[c].length % 25 === 0) c++;
             }
+            // コメントデータを取得
+            const listData = await s3.send(
+                new ListObjectsV2Command({
+                    Bucket: STORAGE_COMICDB_BUCKETNAME,
+                    Prefix: "original_comment/",
+                    Delimiter: "/"
+                })
+            );
+            let newCommentData = "";
+            if (listData.Contents) {
+                for (const v of listData.Contents) {
+                    newCommentData += await processS3getObjet(v) + "\n";
+                }
+            }
+            // JSON LINEとして保存する場合
+            newCommentData += commentData.map((item) => {
+                return JSON.stringify(item);
+            }).join('\n');
+            // コメントデータをS3に格納
+            await s3.send(
+                new PutObjectCommand({
+                    Bucket: STORAGE_COMICDB_BUCKETNAME,
+                    Key: "original_comment/comments.jsonl",
+                    Body: newCommentData,
+                })
+            );
             break;
         }
         default:
@@ -188,10 +235,10 @@ exports.handler = async (event) => {
         if (v.length) {
             const batchWriteParam = {
                 RequestItems: {
-                    [process.env.ComicTable]: v
+                    [API_COMICDB_COMICTABLE_NAME]: v
                 }
             };
-            console.info("BatchWriteItem REQ", batchWriteParam.RequestItems[process.env.ComicTable]);
+            console.info("BatchWriteItem REQ", batchWriteParam.RequestItems[API_COMICDB_COMICTABLE_NAME]);
             const batchWriteResult = await dynamoDBClient.send(new BatchWriteItemCommand(batchWriteParam));
             console.info("BatchWriteItem RES", batchWriteResult);
         }
@@ -206,6 +253,7 @@ exports.handler = async (event) => {
         body: JSON.stringify("Hello from Lambda!"),
     };
 };
+
 
 /**
  * ウェブページのHTMLデータを取得
@@ -255,7 +303,7 @@ async function getHtmlData(inUrl, procType, pageData) {
                 )
                     break;
                 const queryParam = {
-                    TableName: process.env.ComicTable,
+                    TableName: API_COMICDB_COMICTABLE_NAME,
                     IndexName: "byOrderByTitleByUrl",
                     KeyConditionExpression: "#title = :title AND #url = :url",
                     ExpressionAttributeNames: {
@@ -306,7 +354,7 @@ async function getHtmlData(inUrl, procType, pageData) {
                 dayjs().valueOf() +
                 ext;
             const putObjParam = {
-                Bucket: process.env.BucketsName,
+                Bucket: STORAGE_COMICDB_BUCKETNAME,
                 Key: outParam[i].imageUrl,
                 Body: Buffer.from(buffer.data),
             };
@@ -320,6 +368,7 @@ async function getHtmlData(inUrl, procType, pageData) {
     console.info("getHtmlData OUT:", outParam);
     return outParam;
 }
+
 
 // 正式タイトル名を作成する
 async function editOfficialTitleAndAuthor(title) {
@@ -338,9 +387,58 @@ async function editOfficialTitleAndAuthor(title) {
     return outParam;
 }
 
+
 // ストリームを文字列に変換するヘルパー関数
 async function streamToString(stream) {
     const chunks = [];
     for await (const chunk of stream) chunks.push(chunk);
     return Buffer.concat(chunks).toString("utf-8");
+}
+
+
+// コメントをスクレイピングする
+async function getCommentData(commentsUrl, id, commentData) {
+    let date = "";
+    const res = await axios.get(commentsUrl);
+    const $ = cheerio.load(res.data);
+    $(".entry-comments-contents-body").each((i, element) => {
+        $(element).find('.entry-comment-timestamp');
+        const comment = $(element).find('.entry-comment-text.js-bookmark-comment').text().trim();
+        const setDate = $(element).find('.js-bookmark-anchor-path').attr("content") ?? date;
+        if (setDate) date = setDate;
+        const isDuplicate = commentData.some(item => item.id === id && item.comment === comment);
+        if (!isDuplicate) {
+            commentData.push({
+                id,
+                date,
+                comment
+            });
+        }
+    });
+}
+
+
+// S3からデータを取得する
+async function processS3getObjet(v) {
+    try {
+        const response = await s3.send(
+            new GetObjectCommand({
+                Bucket: STORAGE_COMICDB_BUCKETNAME,
+                Key: v.Key,
+            }),
+        );
+        return await response.Body.transformToString();
+    } catch (caught) {
+        if (caught instanceof NoSuchKey) {
+            console.error(
+                `Error from S3 while getting object "${key}" from "${bucketName}". No such key exists.`,
+            );
+        } else if (caught instanceof S3ServiceException) {
+            console.error(
+                `Error from S3 while getting object from ${bucketName}.  ${caught.name}: ${caught.message}`,
+            );
+        } else {
+            throw caught;
+        }
+    }
 }

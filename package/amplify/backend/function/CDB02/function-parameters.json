@@ -13,14 +13,11 @@
     "storage": {
       "comicdb": [
         "create",
-        "read"
-      ],
-      "Comic:@model(appsync)": [
-        "create",
-        "read"
+        "read",
+        "delete"
       ],
       "CDB02:@model(appsync)": [
-        "read"
+        "create"
       ]
     }
   }
