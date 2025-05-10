@@ -15,7 +15,9 @@
       "function": {
         "ComicDbScraping": {
           "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
-          "s3Key": "amplify-builds/ComicDbScraping-4d7261462f334378486b-build.zip"
+          "s3Key": "amplify-builds/ComicDbScraping-4d7261462f334378486b-build.zip",
+          "bucketsName": "comicdb4ec1987bcc0e49149860186233ff425a3010a-dev",
+          "comicTable": "Comic-dvc5b63fpnewnfwpbqxigm66xy-dev"
         },
         "comicdbModules": {
           "deploymentBucketName": "amplify-comicdb-dev-3010a-deployment",
