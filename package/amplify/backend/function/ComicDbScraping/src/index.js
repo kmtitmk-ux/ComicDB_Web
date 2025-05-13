@@ -168,7 +168,7 @@ exports.handler = async (event) => {
                         // クエリの実行
                         const queryParam = {
                             TableName: API_COMICDB_CDB02TABLE_NAME,
-                            IndexName: "byOrderByPostIdByUpdatedAt",
+                            IndexName: "byOrderByPostIdByCreatedAt",
                             KeyConditionExpression: "#postId = :postId",
                             ExpressionAttributeNames: { "#postId": "postId" },
                             ExpressionAttributeValues: { ":postId": { S: v.id.S } },

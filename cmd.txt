@@ -4,23 +4,23 @@ npm --prefix ./package run dev
 
 // コメントスクレイピング
 aws lambda invoke \
-  --function-name ComicDbScraping-dev \
+  --function-name ComicDbScraping-main \
   --payload '{"procType": "checkData"}' \
   --cli-binary-format raw-in-base64-out \
   response.json
 
 
 // オリジナルファイルのコメントデータを50件取得
-aws s3 cp s3://comicdb4ec1987bcc0e49149860186233ff425a3010a-dev/original_comment/comments.jsonl - | head -n 50 > 50.jsonl
+aws s3 cp s3://comicdb4ec1987bcc0e49149860186233ff425a715b3-main/original_comment/comments.jsonl - | head -n 50 > 50.jsonl
 
 
 // リライト済みのコメントデータをアップロード
-aws s3 cp 50.jsonl s3://comicdb4ec1987bcc0e49149860186233ff425a3010a-dev/edited_comment/50.jsonl
+aws s3 cp 50.jsonl s3://comicdb4ec1987bcc0e49149860186233ff425a715b3-main/edited_comment/50.jsonl
 
 
 // コメント反映
 aws lambda invoke \
-  --function-name CDB02-dev \
+  --function-name CDB02-main \
   --payload '{"key1": "value1", "key2": "value2"}' \
   --cli-binary-format raw-in-base64-out \
   response.json
