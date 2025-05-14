@@ -1,7 +1,6 @@
 npm --prefix ./package run dev
 
 
-
 // コメントスクレイピング
 aws lambda invoke \
   --function-name ComicDbScraping-main \
